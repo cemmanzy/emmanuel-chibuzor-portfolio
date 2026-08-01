@@ -334,8 +334,11 @@ export const nav = {
  * Color themes the visitor can switch between from the in-app tour's Theme
  * step. Each theme's colors live in src/styles/tailwind.css under
  * `:root[data-theme="<key>"]`; the `swatch` values here are just what the
- * picker shows (background · text · accent). Set `defaultTheme` to the one that
- * loads first. Add a theme: add a `swatch` entry here AND a matching
+ * picker shows (background · text · accent).
+ *
+ * There is no forced default — the site loads with the base look (styles/
+ * tailwind.css `:root`) until a visitor picks a theme, and that choice is then
+ * remembered. Add a theme: add a `swatch` entry here AND a matching
  * `[data-theme="…"]` block in tailwind.css. */
 export interface Theme {
   key: string;
@@ -344,11 +347,14 @@ export interface Theme {
   swatch: [string, string, string];
 }
 
-export const defaultTheme = 'parchment';
-
 export const themes: Theme[] = [
-  { key: 'parchment', label: 'Parchment', swatch: ['#F5F0EB', '#3B3B3B', '#C2785C'] },
-  { key: 'slate', label: 'Slate', swatch: ['#EEF1F4', '#26313B', '#3E7CA6'] },
-  { key: 'sage', label: 'Sage', swatch: ['#EEF1E7', '#2E3A2B', '#5B8C5A'] },
-  { key: 'midnight', label: 'Midnight', swatch: ['#1B1F24', '#E7E3DC', '#D08A5E'] },
+  { key: 'parchment', label: 'Parchment', swatch: ['#f5f0eb', '#3b3b3b', '#c2785c'] },
+  { key: 'slate', label: 'Slate', swatch: ['#edf0f4', '#26313b', '#3e7ca6'] },
+  { key: 'sage', label: 'Sage', swatch: ['#eef1e7', '#2e3a2b', '#5b8c5a'] },
+  { key: 'ocean', label: 'Ocean', swatch: ['#eaf2f2', '#1e3838', '#2e8c8c'] },
+  { key: 'rose', label: 'Rose', swatch: ['#fbf0f1', '#3e2b2e', '#c25c7a'] },
+  { key: 'dusk', label: 'Dusk', swatch: ['#f1eff7', '#2f2a3d', '#b06cc2'] },
+  { key: 'mono', label: 'Mono', swatch: ['#f4f4f3', '#2b2b2b', '#222222'] },
+  { key: 'midnight', label: 'Midnight', swatch: ['#1b1f24', '#e7e3dc', '#d08a5e'] },
+  { key: 'ember', label: 'Ember', swatch: ['#241c18', '#ede2d8', '#e0794e'] },
 ];

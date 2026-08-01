@@ -15,7 +15,7 @@
  * ========================================================================== */
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { themes, defaultTheme } from '@/config/portfolio';
+import { themes } from '@/config/portfolio';
 
 const STORAGE_KEY = 'pf-tour-v1';
 const THEME_KEY = 'pf-theme';
@@ -85,7 +85,7 @@ const STEPS: Step[] = [
     title: 'Pick a theme',
     body: 'Try a color theme — the whole site recolors instantly and your choice is remembered. Add or edit palettes in the config (each maps to a block in styles/tailwind.css).',
     file: 'src/config/portfolio.ts',
-    keys: ['themes', 'defaultTheme'],
+    keys: ['themes'],
   },
   {
     title: 'That’s the whole surface',
@@ -102,12 +102,13 @@ const AppTour: React.FC = () => {
   const [rect, setRect] = useState<DOMRect | null>(null);
   const rafRef = useRef<number | null>(null);
 
-  // Current theme — seeded from what the layout's init script already applied.
+  // Current theme — seeded from whatever the layout's init script applied (empty
+  // string = no theme picked yet, so no swatch shows as active).
   const [theme, setTheme] = useState<string>(() => {
     if (typeof document !== 'undefined') {
-      return document.documentElement.getAttribute('data-theme') || defaultTheme;
+      return document.documentElement.getAttribute('data-theme') || '';
     }
-    return defaultTheme;
+    return '';
   });
 
   const applyTheme = useCallback((key: string) => {
