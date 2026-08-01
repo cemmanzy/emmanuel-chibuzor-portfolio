@@ -224,7 +224,7 @@ const CliEmbed: React.FC = () => {
                   color: s.text.startsWith('  p')
                     ? '#C3E88D'
                     : s.text.startsWith('│') || s.text.startsWith('┌') || s.text.startsWith('└')
-                      ? '#6E8CA0'
+                      ? 'var(--blue)'
                       : '#8B9BAA',
                 }}
               >
@@ -252,7 +252,7 @@ const MetricsEmbed: React.FC = () => {
     <div
       className="w-full rounded-2xl overflow-hidden"
       style={{
-        background: 'rgba(255,255,255,0.5)',
+        background: 'var(--card)',
         border: '1px solid rgba(110,140,160,0.15)',
         boxShadow: '0 20px 60px -20px rgba(42,42,42,0.08)',
       }}
@@ -267,13 +267,13 @@ const MetricsEmbed: React.FC = () => {
       >
         <div
           className="w-2 h-2 rounded-full"
-          style={{ background: '#C2785C', animation: 'pulse 2s infinite' }}
+          style={{ background: 'var(--clay)', animation: 'pulse 2s infinite' }}
         />
         <span
           className="font-mono text-xs tracking-widest uppercase"
           style={{
             fontFamily: 'JetBrains Mono, monospace',
-            color: '#6E8CA0',
+            color: 'var(--blue)',
             fontSize: '10px',
             letterSpacing: '0.2em',
           }}
@@ -282,7 +282,11 @@ const MetricsEmbed: React.FC = () => {
         </span>
         <span
           className="ml-auto font-mono text-xs"
-          style={{ fontFamily: 'JetBrains Mono, monospace', color: '#C2785C', fontSize: '10px' }}
+          style={{
+            fontFamily: 'JetBrains Mono, monospace',
+            color: 'var(--clay)',
+            fontSize: '10px',
+          }}
         >
           in progress
         </span>
@@ -292,7 +296,11 @@ const MetricsEmbed: React.FC = () => {
       <div className="px-6 pt-5 pb-3">
         <p
           className="font-serif italic text-sm leading-relaxed"
-          style={{ fontFamily: 'Fraunces, serif', color: '#6B6B6B', fontSize: '14px' }}
+          style={{
+            fontFamily: 'Fraunces, serif',
+            color: 'var(--graphite-light)',
+            fontSize: '14px',
+          }}
         >
           &ldquo;A sketch, not a render. The diff viewer is still a whiteboard photo.&rdquo;
         </p>
@@ -304,13 +312,17 @@ const MetricsEmbed: React.FC = () => {
           <div key={i} className="px-6 py-5" style={{ background: 'rgba(245,240,235,0.6)' }}>
             <div
               className="font-mono text-2xl font-bold mb-1"
-              style={{ fontFamily: 'JetBrains Mono, monospace', color: '#3B3B3B' }}
+              style={{ fontFamily: 'JetBrains Mono, monospace', color: 'var(--graphite)' }}
             >
               {m.value}
             </div>
             <div
               className="text-xs font-medium mb-0.5"
-              style={{ fontFamily: 'DM Sans, sans-serif', color: '#3B3B3B', fontSize: '12px' }}
+              style={{
+                fontFamily: 'DM Sans, sans-serif',
+                color: 'var(--graphite)',
+                fontSize: '12px',
+              }}
             >
               {m.label}
             </div>
@@ -318,7 +330,7 @@ const MetricsEmbed: React.FC = () => {
               className="text-xs"
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                color: '#6E8CA0',
+                color: 'var(--blue)',
                 fontSize: '10px',
               }}
             >
@@ -338,7 +350,11 @@ const MetricsEmbed: React.FC = () => {
         </svg>
         <span
           className="font-mono text-xs"
-          style={{ fontFamily: 'JetBrains Mono, monospace', color: '#6B6B6B', fontSize: '11px' }}
+          style={{
+            fontFamily: 'JetBrains Mono, monospace',
+            color: 'var(--graphite-light)',
+            fontSize: '11px',
+          }}
         >
           {social.github.replace(/^https?:\/\//, '')}
         </span>
@@ -376,7 +392,7 @@ const ProjectRow: React.FC<{ project: Project; index: number }> = ({ project, in
         transform: visible ? 'translateY(0)' : 'translateY(40px)',
         transition:
           'opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1)',
-        borderTop: index > 0 ? '1px solid rgba(59,59,59,0.06)' : 'none',
+        borderTop: index > 0 ? '1px solid var(--hair)' : 'none',
       }}
     >
       {/* Embed side */}
@@ -402,7 +418,7 @@ const ProjectRow: React.FC<{ project: Project; index: number }> = ({ project, in
           style={{
             fontFamily: 'Fraunces, serif',
             fontSize: 'clamp(1.6rem, 2.5vw, 2.2rem)',
-            color: '#3B3B3B',
+            color: 'var(--graphite)',
             lineHeight: 1.15,
           }}
         >
@@ -413,7 +429,7 @@ const ProjectRow: React.FC<{ project: Project; index: number }> = ({ project, in
           className="font-body text-sm mb-6 leading-relaxed"
           style={{
             fontFamily: 'DM Sans, sans-serif',
-            color: '#6E8CA0',
+            color: 'var(--blue)',
             fontSize: '14px',
             fontStyle: 'italic',
           }}
@@ -437,7 +453,7 @@ const ProjectRow: React.FC<{ project: Project; index: number }> = ({ project, in
               className="font-body text-sm leading-relaxed mb-4 last:mb-0"
               style={{
                 fontFamily: 'DM Sans, sans-serif',
-                color: '#6B6B6B',
+                color: 'var(--graphite-light)',
                 fontSize: '14px',
                 lineHeight: 1.8,
               }}
@@ -480,13 +496,13 @@ const ProjectSpotlight: React.FC = () => (
   <section id="work" data-tour="work" className="bg-parchment">
     <div
       className="max-w-7xl mx-auto px-8 pt-24 pb-8"
-      style={{ borderBottom: '1px solid rgba(59,59,59,0.06)' }}
+      style={{ borderBottom: '1px solid var(--hair)' }}
     >
       <span
         className="font-mono text-xs tracking-widest uppercase"
         style={{
           fontFamily: 'JetBrains Mono, monospace',
-          color: '#6E8CA0',
+          color: 'var(--blue)',
           fontSize: '10px',
           letterSpacing: '0.25em',
         }}
@@ -498,7 +514,7 @@ const ProjectSpotlight: React.FC = () => (
         style={{
           fontFamily: 'Fraunces, serif',
           fontSize: 'clamp(2rem, 4vw, 3.5rem)',
-          color: '#3B3B3B',
+          color: 'var(--graphite)',
           lineHeight: 1.1,
         }}
       >

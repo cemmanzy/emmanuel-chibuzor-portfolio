@@ -58,12 +58,12 @@ const generateContribData = async () => {
 };
 
 const getContribColor = (level: number): string => {
-  if (level === 0) return 'rgba(59,59,59,0.06)';
+  if (level === 0) return 'var(--hair)';
   if (level === 1) return 'rgba(110,140,160,0.25)';
   if (level === 2) return 'rgba(110,140,160,0.5)';
   if (level === 3) return 'rgba(110,140,160,0.75)';
-  if (level >= 4) return '#6E8CA0';
-  return 'rgba(59,59,59,0.06)';
+  if (level >= 4) return 'var(--blue)';
+  return 'var(--hair)';
 };
 
 const PeerSignal: React.FC = () => {
@@ -108,7 +108,7 @@ const PeerSignal: React.FC = () => {
             className="font-mono text-xs tracking-widest uppercase"
             style={{
               fontFamily: 'JetBrains Mono, monospace',
-              color: '#6E8CA0',
+              color: 'var(--blue)',
               fontSize: '10px',
               letterSpacing: '0.25em',
             }}
@@ -120,7 +120,7 @@ const PeerSignal: React.FC = () => {
             style={{
               fontFamily: 'Fraunces, serif',
               fontSize: 'clamp(2rem, 4vw, 3.2rem)',
-              color: '#3B3B3B',
+              color: 'var(--graphite)',
               lineHeight: 1.1,
             }}
           >
@@ -134,13 +134,13 @@ const PeerSignal: React.FC = () => {
           <div className="md:col-span-7">
             <div
               className="peer-card h-full"
-              style={{ background: '#2A2A2A', borderColor: 'rgba(255,255,255,0.05)' }}
+              style={{ background: 'var(--dark)', borderColor: 'rgba(255,255,255,0.05)' }}
             >
               <div
                 className="font-serif text-5xl mb-4 select-none"
                 style={{
                   fontFamily: 'Fraunces, serif',
-                  color: '#C2785C',
+                  color: 'var(--clay)',
                   opacity: 0.4,
                   lineHeight: 1,
                 }}
@@ -198,7 +198,7 @@ const PeerSignal: React.FC = () => {
                     className="tag-pill"
                     style={{
                       background: 'rgba(110,140,160,0.15)',
-                      color: '#8AAFC4',
+                      color: 'var(--blue-light)',
                       borderColor: 'rgba(110,140,160,0.2)',
                     }}
                   >
@@ -226,7 +226,7 @@ const PeerSignal: React.FC = () => {
                   className="text-sm leading-relaxed mb-6"
                   style={{
                     fontFamily: 'DM Sans, sans-serif',
-                    color: '#3B3B3B',
+                    color: 'var(--graphite)',
                     fontSize: '14px',
                     lineHeight: 1.75,
                   }}
@@ -251,7 +251,7 @@ const PeerSignal: React.FC = () => {
                       className="font-mono text-xs font-medium"
                       style={{
                         fontFamily: 'JetBrains Mono, monospace',
-                        color: '#3B3B3B',
+                        color: 'var(--graphite)',
                         fontSize: '12px',
                       }}
                     >
@@ -261,7 +261,7 @@ const PeerSignal: React.FC = () => {
                       className="text-xs"
                       style={{
                         fontFamily: 'DM Sans, sans-serif',
-                        color: '#6B6B6B',
+                        color: 'var(--graphite-light)',
                         fontSize: '11px',
                       }}
                     >
@@ -272,7 +272,7 @@ const PeerSignal: React.FC = () => {
                     className="ml-auto font-mono text-xs"
                     style={{
                       fontFamily: 'JetBrains Mono, monospace',
-                      color: '#6E8CA0',
+                      color: 'var(--blue)',
                       fontSize: '10px',
                     }}
                   >
@@ -287,7 +287,7 @@ const PeerSignal: React.FC = () => {
         {/* GitHub contribution heatmap */}
         <div
           className="rounded-2xl p-8"
-          style={{ background: 'rgba(255,255,255,0.5)', border: '1px solid rgba(59,59,59,0.06)' }}
+          style={{ background: 'var(--card)', border: '1px solid var(--hair)' }}
         >
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
             <div>
@@ -295,7 +295,7 @@ const PeerSignal: React.FC = () => {
                 className="font-mono text-xs tracking-widest uppercase mb-1"
                 style={{
                   fontFamily: 'JetBrains Mono, monospace',
-                  color: '#6E8CA0',
+                  color: 'var(--blue)',
                   fontSize: '10px',
                   letterSpacing: '0.2em',
                 }}
@@ -305,7 +305,11 @@ const PeerSignal: React.FC = () => {
               {userData?.res?.total && (
                 <p
                   className="font-serif font-medium"
-                  style={{ fontFamily: 'Fraunces, serif', color: '#3B3B3B', fontSize: '18px' }}
+                  style={{
+                    fontFamily: 'Fraunces, serif',
+                    color: 'var(--graphite)',
+                    fontSize: '18px',
+                  }}
                 >
                   {userData.res.total} contributions in the last year
                 </p>
@@ -314,7 +318,11 @@ const PeerSignal: React.FC = () => {
             <div className="flex items-center gap-3">
               <span
                 className="text-xs"
-                style={{ fontFamily: 'DM Sans, sans-serif', color: '#6B6B6B', fontSize: '12px' }}
+                style={{
+                  fontFamily: 'DM Sans, sans-serif',
+                  color: 'var(--graphite-light)',
+                  fontSize: '12px',
+                }}
               >
                 Less
               </span>
@@ -327,7 +335,11 @@ const PeerSignal: React.FC = () => {
               ))}
               <span
                 className="text-xs"
-                style={{ fontFamily: 'DM Sans, sans-serif', color: '#6B6B6B', fontSize: '12px' }}
+                style={{
+                  fontFamily: 'DM Sans, sans-serif',
+                  color: 'var(--graphite-light)',
+                  fontSize: '12px',
+                }}
               >
                 More
               </span>
@@ -338,7 +350,7 @@ const PeerSignal: React.FC = () => {
           <div className="overflow-x-auto">
             <div className="flex gap-1" style={{ minWidth: '700px' }}>
               {userData?.contribData?.length === 0 ? (
-                <div style={{ color: '#6B6B6B', fontSize: 12 }}>Loading...</div>
+                <div style={{ color: 'var(--graphite-light)', fontSize: 12 }}>Loading...</div>
               ) : (
                 userData?.contribData.map((week, wi) => (
                   <div key={wi} className="flex flex-col gap-1">
@@ -359,7 +371,7 @@ const PeerSignal: React.FC = () => {
           {/* Stats row */}
           <div
             className="grid grid-cols-2 md:grid-cols-4 gap-6 mt-8 pt-6"
-            style={{ borderTop: '1px solid rgba(59,59,59,0.06)' }}
+            style={{ borderTop: '1px solid var(--hair)' }}
           >
             {[
               { label: 'Public repos', value: userData.res.publicRepos },
@@ -370,13 +382,17 @@ const PeerSignal: React.FC = () => {
               <div key={stat.label}>
                 <div
                   className="font-mono text-2xl font-bold mb-1"
-                  style={{ fontFamily: 'JetBrains Mono, monospace', color: '#3B3B3B' }}
+                  style={{ fontFamily: 'JetBrains Mono, monospace', color: 'var(--graphite)' }}
                 >
                   {stat.value}
                 </div>
                 <div
                   className="text-xs"
-                  style={{ fontFamily: 'DM Sans, sans-serif', color: '#6B6B6B', fontSize: '12px' }}
+                  style={{
+                    fontFamily: 'DM Sans, sans-serif',
+                    color: 'var(--graphite-light)',
+                    fontSize: '12px',
+                  }}
                 >
                   {stat.label}
                 </div>

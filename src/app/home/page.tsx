@@ -5,7 +5,6 @@ import HeroSection from './components/HeroSection';
 import ProjectSpotlight from './components/ProjectSpotlight';
 import EssayGallery from './components/EssayGallery';
 import PeerSignal from './components/PeerSignal';
-import WaitlistSection from './components/WaitlistSection';
 import AppTour from '@/components/tour/AppTour';
 
 export default function HomePage() {
@@ -31,9 +30,6 @@ export default function HomePage() {
 
       {/* Peer Signal — testimonials + GitHub heatmap */}
       <PeerSignal />
-
-      {/* Waitlist CTA — dark section */}
-      <WaitlistSection />
 
       {/* Footer */}
       <Footer />

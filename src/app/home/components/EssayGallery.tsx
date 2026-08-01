@@ -40,7 +40,7 @@ const EssayCard: React.FC<{
           style={{
             fontFamily: 'Fraunces, serif',
             fontSize: '17px',
-            color: '#3B3B3B',
+            color: 'var(--graphite)',
             lineHeight: 1.3,
           }}
         >
@@ -52,7 +52,7 @@ const EssayCard: React.FC<{
           className="text-sm leading-relaxed mb-5"
           style={{
             fontFamily: 'DM Sans, sans-serif',
-            color: '#6B6B6B',
+            color: 'var(--graphite-light)',
             fontSize: '13px',
             lineHeight: 1.75,
           }}
@@ -63,17 +63,25 @@ const EssayCard: React.FC<{
         {/* Footer */}
         <div
           className="flex items-center justify-between pt-4"
-          style={{ borderTop: '1px solid rgba(59,59,59,0.06)' }}
+          style={{ borderTop: '1px solid var(--hair)' }}
         >
           <span
             className="font-mono text-xs"
-            style={{ fontFamily: 'JetBrains Mono, monospace', color: '#6E8CA0', fontSize: '10px' }}
+            style={{
+              fontFamily: 'JetBrains Mono, monospace',
+              color: 'var(--blue)',
+              fontSize: '10px',
+            }}
           >
             {essay.date}
           </span>
           <span
             className="font-mono text-xs"
-            style={{ fontFamily: 'JetBrains Mono, monospace', color: '#6B6B6B', fontSize: '10px' }}
+            style={{
+              fontFamily: 'JetBrains Mono, monospace',
+              color: 'var(--graphite-light)',
+              fontSize: '10px',
+            }}
           >
             {essay.readTime} read
           </span>
@@ -118,7 +126,7 @@ const EssayGallery: React.FC = () => {
               className="font-mono text-xs tracking-widest uppercase"
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                color: '#6E8CA0',
+                color: 'var(--blue)',
                 fontSize: '10px',
                 letterSpacing: '0.25em',
               }}
@@ -130,7 +138,7 @@ const EssayGallery: React.FC = () => {
               style={{
                 fontFamily: 'Fraunces, serif',
                 fontSize: 'clamp(2rem, 4vw, 3.2rem)',
-                color: '#3B3B3B',
+                color: 'var(--graphite)',
                 lineHeight: 1.1,
               }}
             >
@@ -141,7 +149,7 @@ const EssayGallery: React.FC = () => {
             className="max-w-xs text-sm leading-relaxed"
             style={{
               fontFamily: 'DM Sans, sans-serif',
-              color: '#6B6B6B',
+              color: 'var(--graphite-light)',
               fontSize: '14px',
               lineHeight: 1.75,
             }}
@@ -183,7 +191,7 @@ const EssayGallery: React.FC = () => {
               className="inline-flex items-center gap-2 font-mono text-sm hover:text-clay transition-colors duration-200"
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                color: '#6E8CA0',
+                color: 'var(--blue)',
                 fontSize: '13px',
               }}
             >

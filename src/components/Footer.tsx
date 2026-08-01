@@ -14,7 +14,7 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="border-t border-graphite/8 py-10 bg-parchment">
+    <footer className="border-t py-10 bg-parchment" style={{ borderColor: 'var(--hair)' }}>
       <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-center justify-between gap-6">
         {/* Left: Logo + links */}
         <div className="flex items-center gap-8">
@@ -26,7 +26,11 @@ const Footer: React.FC = () => {
                 href={link.href}
                 {...('target' in link ? { target: link.target } : {})}
                 className="text-sm font-medium text-graphite-light hover:text-graphite transition-colors duration-200"
-                style={{ fontFamily: 'DM Sans, sans-serif', color: '#6B6B6B', fontSize: '14px' }}
+                style={{
+                  fontFamily: 'DM Sans, sans-serif',
+                  color: 'var(--graphite-light)',
+                  fontSize: '14px',
+                }}
               >
                 {link.label}
               </a>
@@ -80,7 +84,11 @@ const Footer: React.FC = () => {
           )}
           <span
             className="text-sm text-graphite-light"
-            style={{ fontFamily: 'DM Sans, sans-serif', fontSize: '13px', color: '#6B6B6B' }}
+            style={{
+              fontFamily: 'DM Sans, sans-serif',
+              fontSize: '13px',
+              color: 'var(--graphite-light)',
+            }}
           >
             © {YEAR} {site.brand}
           </span>

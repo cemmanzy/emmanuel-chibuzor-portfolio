@@ -13,23 +13,23 @@
  *    5. projects    → "Selected Work" cards
  *    6. essays      → "Technical Writing" gallery
  *    7. testimonials→ "Peer Signal" quotes
- *    8. newsletter  → the closing call-to-action section
- *    9. nav         → header / footer links
+ *    8. nav         → header / footer links
+ *    9. themes      → color themes the in-app tour can switch between
  *
  *  Tip: the in-app tour (bottom-right "Customize" button) walks through each of
- *  these live and tells you which key edits what.
+ *  these live, lets you switch the site theme, and tells you which key edits what.
  * ========================================================================== */
 
 /* ── 1. Site / SEO ─────────────────────────────────────────────────────────
  * Shown in the browser tab and by search engines & social cards. */
 export const site = {
   /** Short brand shown in the header & footer (e.g. a handle or initials). */
-  brand: 'vpnsin',
+  brand: 'SA',
   /** <title> tag. */
-  title: 'vpnsin — Engineering Work by Hand',
+  title: 'SA — Delivering Securely',
   /** <meta name="description">. Keep it under ~160 characters. */
   description:
-    'The workshop of a devops engineer who ships real things. Projects, essays, and open-source contributions — hand-finished, annotated, and honest.',
+    'The workshop for explaining SDLC rolesets who ships real things. Projects, essays, and open-source contributions — hand-finished, annotated, and honest.',
   /** Path (in /public) to the logo used in the header, footer and favicon. */
   logo: '/assets/images/app_logo.png',
 };
@@ -37,38 +37,20 @@ export const site = {
 /* ── 2. Person ─────────────────────────────────────────────────────────────
  * Who you are. Drives the hero "name spine", header, and footer. */
 export const person = {
-  firstName: 'First',
-  lastName: 'Name',
+  firstName: 'Shariq',
+  lastName: 'Ali',
   /** The small eyebrow above your name (your title / role). */
-  role: 'Senior DevOps Engineer',
+  role: 'Senior SDLC Trainer',
   /** One or two sentences under your name in the hero. */
-  bio: 'I build systems that run fast and fail gracefully. Terraform, Node.js, distributed infrastructure — I share what I learn as I build.',
+  bio: 'I train students and professionals in SDLC, Product Dev, Design and Deploy ',
   /** City, Country — shown next to the availability dot. */
-  location: 'Leeds, United Kingdom',
+  location: 'Bareilly, India',
   /** Short availability line (set to '' to hide the green pulse + text). */
-  availability: 'Open to senior / lead roles',
+  availability: 'Open to senior/lead Training roles',
   /** Path (in /public) to your résumé PDF. */
   resumeUrl: 'assets/resume/resume.pdf',
   /** Skill pills under your bio. Add/remove freely. */
-  skills: [
-    'AEM',
-    'Agile',
-    'AI',
-    'Azure',
-    'Azure DevOps',
-    'CI/CD',
-    'Docker',
-    'GitHub Actions',
-    'JavaScript',
-    'Kubernetes',
-    'Mentoring',
-    'Next.js',
-    'Node.js',
-    'React',
-    'Terraform',
-    'TypeScript',
-    'YAML',
-  ],
+  skills: ['Design', 'Agile', 'Test', 'Build', 'Design', 'Deploy'],
 };
 
 /* ── 3. Social links ───────────────────────────────────────────────────────
@@ -79,7 +61,7 @@ export const social = {
   github: 'https://github.com/vpnsin',
   twitter: 'https://twitter.com/vpnsin',
   linkedin: 'https://www.linkedin.com/in/vipin-k-singh/',
-  email: '',
+  email: 'test@gmail.com',
 };
 
 /* ── 4. Hero ───────────────────────────────────────────────────────────────
@@ -339,39 +321,34 @@ export const testimonials: Testimonial[] = [
   },
 ];
 
-/* ── 8. Newsletter / closing CTA ───────────────────────────────────────────
- * The dark section at the bottom. It's a demo form (no backend) — wire it to
- * your provider in WaitlistSection.tsx, or repurpose it as a plain contact CTA. */
-export const newsletter = {
-  eyebrow: 'Coming Soon',
-  /** Starting count shown in the animated counter (set to 0 to keep it simple). */
-  startCount: 847,
-  countLabel: 'engineers already subscribed',
-  headlineTop: 'The build log.',
-  headlineBottom: 'One per month.',
-  promise:
-    "One build log per month — no spam, no fluff, just the notebook. Deep dives into whatever I'm building, annotated with decisions, mistakes, and the parts that took three rewrites to get right.",
-  bullets: [
-    "The architecture decision that didn't make the README",
-    'Benchmark results, including the ones that were embarrassing',
-    'One recommended read that changed how I think',
-  ],
-  formLabel: 'Reserve your spot',
-  ctaLabel: 'Subscribe',
-  ctaLoadingLabel: 'Subscribing…',
-  finePrint: 'Unsubscribe any time. No dark patterns, no upsells.',
-  /** The "star the repo" alternative CTA. Set repoUrl '' to hide it. */
-  repoUrl: 'https://github.com/vpnsin',
-  repoStars: '2.1k',
-};
-
-/* ── 9. Navigation ─────────────────────────────────────────────────────────
+/* ── 8. Navigation ─────────────────────────────────────────────────────────
  * Header + footer links. `href` values starting with `#` scroll to a section. */
 export const nav = {
   links: [
     { label: 'Work', href: '#work' },
     { label: 'Findings', href: '#writing' },
   ],
-  /** Header call-to-action button (label '' hides it). */
-  cta: { label: 'Subscribe', href: '#newsletter' },
 };
+
+/* ── 9. Themes ─────────────────────────────────────────────────────────────
+ * Color themes the visitor can switch between from the in-app tour's Theme
+ * step. Each theme's colors live in src/styles/tailwind.css under
+ * `:root[data-theme="<key>"]`; the `swatch` values here are just what the
+ * picker shows (background · text · accent). Set `defaultTheme` to the one that
+ * loads first. Add a theme: add a `swatch` entry here AND a matching
+ * `[data-theme="…"]` block in tailwind.css. */
+export interface Theme {
+  key: string;
+  label: string;
+  /** [background, text, accent] — shown as the swatch in the tour. */
+  swatch: [string, string, string];
+}
+
+export const defaultTheme = 'parchment';
+
+export const themes: Theme[] = [
+  { key: 'parchment', label: 'Parchment', swatch: ['#F5F0EB', '#3B3B3B', '#C2785C'] },
+  { key: 'slate', label: 'Slate', swatch: ['#EEF1F4', '#26313B', '#3E7CA6'] },
+  { key: 'sage', label: 'Sage', swatch: ['#EEF1E7', '#2E3A2B', '#5B8C5A'] },
+  { key: 'midnight', label: 'Midnight', swatch: ['#1B1F24', '#E7E3DC', '#D08A5E'] },
+];

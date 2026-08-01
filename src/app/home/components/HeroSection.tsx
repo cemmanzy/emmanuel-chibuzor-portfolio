@@ -53,7 +53,7 @@ const TerminalVignette: React.FC<{ active: boolean }> = ({ active }) => {
             {line.type === 'prompt' && (
               <>
                 <span className="terminal-prompt">❯</span>
-                <span style={{ color: '#8AAFC4' }}>{line.text}</span>
+                <span style={{ color: 'var(--blue-light)' }}>{line.text}</span>
                 <span className="terminal-prompt ml-1">%</span>
               </>
             )}
@@ -66,7 +66,7 @@ const TerminalVignette: React.FC<{ active: boolean }> = ({ active }) => {
             {line.type === 'output' && (
               <span className="terminal-output pl-4">
                 <span className="terminal-highlight">{line.text.split(' ')[0]}</span>{' '}
-                <span style={{ color: '#6E8CA0' }}>{line.text.split(' ')[1]}</span>{' '}
+                <span style={{ color: 'var(--blue)' }}>{line.text.split(' ')[1]}</span>{' '}
                 <span>{line.text.split(' ').slice(2).join(' ')}</span>
               </span>
             )}
@@ -104,7 +104,11 @@ const DiagramVignette: React.FC<{ active: boolean }> = ({ active }) => {
       <div className="mb-4 flex items-center gap-3">
         <span
           className="font-mono text-xs tracking-widest uppercase"
-          style={{ fontFamily: 'JetBrains Mono, monospace', color: '#6E8CA0', fontSize: '10px' }}
+          style={{
+            fontFamily: 'JetBrains Mono, monospace',
+            color: 'var(--blue)',
+            fontSize: '10px',
+          }}
         >
           {label}
         </span>
@@ -210,7 +214,7 @@ const DiagramVignette: React.FC<{ active: boolean }> = ({ active }) => {
         className="mt-3 font-mono text-xs"
         style={{
           fontFamily: 'JetBrains Mono, monospace',
-          color: '#6B6B6B',
+          color: 'var(--graphite-light)',
           fontSize: '11px',
           lineHeight: 1.6,
         }}
@@ -267,7 +271,7 @@ const TypewriterVignette: React.FC<{ active: boolean }> = ({ active }) => {
           fontFamily: 'Fraunces, serif',
           fontSize: '5rem',
           lineHeight: 1,
-          color: '#C2785C',
+          color: 'var(--clay)',
           opacity: 0.25,
           marginBottom: '-1rem',
         }}
@@ -302,13 +306,21 @@ const TypewriterVignette: React.FC<{ active: boolean }> = ({ active }) => {
         <div>
           <p
             className="font-mono text-sm font-medium"
-            style={{ fontFamily: 'JetBrains Mono, monospace', color: '#3B3B3B', fontSize: '13px' }}
+            style={{
+              fontFamily: 'JetBrains Mono, monospace',
+              color: 'var(--graphite)',
+              fontSize: '13px',
+            }}
           >
             {hero.quote.name}
           </p>
           <p
             className="text-xs mt-0.5"
-            style={{ fontFamily: 'DM Sans, sans-serif', color: '#6B6B6B', fontSize: '12px' }}
+            style={{
+              fontFamily: 'DM Sans, sans-serif',
+              color: 'var(--graphite-light)',
+              fontSize: '12px',
+            }}
           >
             {hero.quote.title}
           </p>
@@ -445,7 +457,7 @@ const HeroSection: React.FC = () => {
                 className="font-mono text-xs"
                 style={{
                   fontFamily: 'JetBrains Mono, monospace',
-                  color: '#6B6B6B',
+                  color: 'var(--graphite-light)',
                   fontSize: '10px',
                   letterSpacing: '0.1em',
                 }}
@@ -470,7 +482,7 @@ const HeroSection: React.FC = () => {
                 style={{
                   fontFamily: 'JetBrains Mono, monospace',
                   fontSize: '10px',
-                  color: '#3B3B3B',
+                  color: 'var(--graphite)',
                   letterSpacing: '0.1em',
                 }}
               >
@@ -485,7 +497,7 @@ const HeroSection: React.FC = () => {
               className="font-mono text-xs tracking-widest uppercase"
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                color: '#6E8CA0',
+                color: 'var(--blue)',
                 fontSize: '10px',
                 letterSpacing: '0.2em',
               }}
@@ -496,7 +508,7 @@ const HeroSection: React.FC = () => {
         </div>
 
         {/* Vertical divider */}
-        <div className="w-px bg-graphite/8 self-stretch" />
+        <div className="w-px self-stretch" style={{ background: 'var(--hair)' }} />
 
         {/* ─── 40% Right: Name spine ─── */}
         <div className="name-spine flex-[4]" data-tour="hero-name">
@@ -506,7 +518,7 @@ const HeroSection: React.FC = () => {
               className="font-mono text-xs tracking-widest uppercase"
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
-                color: '#C2785C',
+                color: 'var(--clay)',
                 fontSize: '10px',
                 letterSpacing: '0.25em',
               }}
@@ -521,7 +533,7 @@ const HeroSection: React.FC = () => {
             style={{
               fontFamily: 'Fraunces, serif',
               fontSize: 'clamp(2.8rem, 5vw, 5rem)',
-              color: '#3B3B3B',
+              color: 'var(--graphite)',
               lineHeight: 1.05,
               letterSpacing: '-0.02em',
             }}
@@ -532,14 +544,14 @@ const HeroSection: React.FC = () => {
           </h1>
 
           {/* Thin rule */}
-          <div className="my-2 w-12 h-px" style={{ background: '#C2785C' }} />
+          <div className="my-2 w-12 h-px" style={{ background: 'var(--clay)' }} />
 
           {/* Short bio */}
           <p
             className="font-body text-sm leading-relaxed max-w-xs"
             style={{
               fontFamily: 'DM Sans, sans-serif',
-              color: '#6B6B6B',
+              color: 'var(--graphite-light)',
               fontSize: '14px',
               lineHeight: 1.75,
             }}
@@ -573,7 +585,7 @@ const HeroSection: React.FC = () => {
                 className="font-mono text-xs"
                 style={{
                   fontFamily: 'JetBrains Mono, monospace',
-                  color: '#6B6B6B',
+                  color: 'var(--graphite-light)',
                   fontSize: '11px',
                 }}
               >

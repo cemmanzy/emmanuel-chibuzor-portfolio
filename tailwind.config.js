@@ -7,20 +7,22 @@ module.exports = {
   ],
   theme: {
     extend: {
+      // Colors reference CSS variables (defined per-theme in styles/tailwind.css)
+      // so every `bg-parchment` / `text-clay` / etc. class is theme-switchable.
       colors: {
-        parchment: '#F5F0EB',
-        'parchment-dark': '#EDE6DC',
-        'parchment-deeper': '#E0D7CB',
-        graphite: '#3B3B3B',
-        'graphite-light': '#6B6B6B',
-        blue: '#6E8CA0',
-        'blue-light': '#8AAFC4',
-        'blue-dark': '#4A6E84',
-        clay: '#C2785C',
-        'clay-light': '#D4917A',
-        'clay-dark': '#A85E42',
-        dark: '#2A2A2A',
-        'dark-surface': '#1E1E1E',
+        parchment: 'var(--parchment)',
+        'parchment-dark': 'var(--parchment-dark)',
+        'parchment-deeper': 'var(--parchment-deeper)',
+        graphite: 'var(--graphite)',
+        'graphite-light': 'var(--graphite-light)',
+        blue: 'var(--blue)',
+        'blue-light': 'var(--blue-light)',
+        'blue-dark': 'var(--blue-dark)',
+        clay: 'var(--clay)',
+        'clay-light': 'var(--clay-light)',
+        'clay-dark': 'var(--clay-dark)',
+        dark: 'var(--dark)',
+        'dark-surface': 'var(--dark-surface)',
       },
       fontFamily: {
         mono: ['"JetBrains Mono"', 'monospace'],

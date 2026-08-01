@@ -15,8 +15,10 @@
  * ========================================================================== */
 
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { themes, defaultTheme } from '@/config/portfolio';
 
 const STORAGE_KEY = 'pf-tour-v1';
+const THEME_KEY = 'pf-theme';
 
 interface Step {
   /** [data-tour] value of the element to spotlight. Omit for a centered card. */
@@ -26,6 +28,8 @@ interface Step {
   /** Config location shown as a code chip. */
   file?: string;
   keys?: string[];
+  /** When true, this step renders the live theme picker. */
+  theme?: boolean;
 }
 
 const STEPS: Step[] = [
@@ -37,9 +41,9 @@ const STEPS: Step[] = [
   {
     target: 'header',
     title: 'Brand & navigation',
-    body: 'Your handle, logo, nav links and the header button. Swap the logo by dropping your own file in /public/assets/images and pointing site.logo at it.',
+    body: 'Your handle, logo and nav links. Swap the logo by dropping your own file in /public/assets/images and pointing site.logo at it.',
     file: 'src/config/portfolio.ts',
-    keys: ['site.brand', 'site.logo', 'nav.links', 'nav.cta'],
+    keys: ['site.brand', 'site.logo', 'nav.links'],
   },
   {
     target: 'hero-name',
@@ -77,11 +81,11 @@ const STEPS: Step[] = [
     keys: ['testimonials[]', 'social.githubUsername'],
   },
   {
-    target: 'newsletter',
-    title: 'Closing call-to-action',
-    body: 'A demo newsletter form (no backend yet). Repurpose the copy, or wire the submit handler to your email provider in WaitlistSection.tsx. Set newsletter.repoUrl to your fork.',
+    theme: true,
+    title: 'Pick a theme',
+    body: 'Try a color theme — the whole site recolors instantly and your choice is remembered. Add or edit palettes in the config (each maps to a block in styles/tailwind.css).',
     file: 'src/config/portfolio.ts',
-    keys: ['newsletter'],
+    keys: ['themes', 'defaultTheme'],
   },
   {
     title: 'That’s the whole surface',
@@ -97,6 +101,24 @@ const AppTour: React.FC = () => {
   const [index, setIndex] = useState(0);
   const [rect, setRect] = useState<DOMRect | null>(null);
   const rafRef = useRef<number | null>(null);
+
+  // Current theme — seeded from what the layout's init script already applied.
+  const [theme, setTheme] = useState<string>(() => {
+    if (typeof document !== 'undefined') {
+      return document.documentElement.getAttribute('data-theme') || defaultTheme;
+    }
+    return defaultTheme;
+  });
+
+  const applyTheme = useCallback((key: string) => {
+    setTheme(key);
+    document.documentElement.setAttribute('data-theme', key);
+    try {
+      localStorage.setItem(THEME_KEY, key);
+    } catch {
+      /* ignore private-mode errors */
+    }
+  }, []);
 
   const step = STEPS[index];
   const isFirst = index === 0;
@@ -214,7 +236,7 @@ const AppTour: React.FC = () => {
         fontFamily: 'JetBrains Mono, monospace',
         fontSize: '12px',
         fontWeight: 600,
-        color: '#3B3B3B',
+        color: 'var(--graphite)',
         cursor: 'pointer',
       }}
     >
@@ -248,7 +270,8 @@ const AppTour: React.FC = () => {
     cardLeft = vw / 2 - CARD_W / 2;
   }
 
-  const dim = 'rgba(30,28,26,0.62)';
+  // Dim the page — but go lighter on the theme step so the live recolor shows.
+  const dim = step.theme ? 'rgba(30,28,26,0.28)' : 'rgba(30,28,26,0.62)';
   // Four panels that frame the target, leaving a lit "window" over it.
   const panels = rect
     ? [
@@ -323,7 +346,7 @@ const AppTour: React.FC = () => {
             left: cardLeft,
             width: CARD_W,
             zIndex: 10060,
-            background: '#F5F0EB',
+            background: 'var(--parchment)',
             border: '1px solid rgba(59,59,59,0.1)',
             borderRadius: '16px',
             boxShadow: '0 30px 70px -20px rgba(42,42,42,0.45)',
@@ -340,7 +363,7 @@ const AppTour: React.FC = () => {
                 fontSize: '10px',
                 letterSpacing: '0.2em',
                 textTransform: 'uppercase',
-                color: '#C2785C',
+                color: 'var(--clay)',
                 fontWeight: 600,
               }}
             >
@@ -352,7 +375,7 @@ const AppTour: React.FC = () => {
               style={{
                 fontFamily: 'JetBrains Mono, monospace',
                 fontSize: '11px',
-                color: '#6B6B6B',
+                color: 'var(--graphite-light)',
                 background: 'none',
                 border: 'none',
                 cursor: 'pointer',
@@ -367,7 +390,7 @@ const AppTour: React.FC = () => {
               fontFamily: 'Fraunces, serif',
               fontSize: '20px',
               lineHeight: 1.2,
-              color: '#3B3B3B',
+              color: 'var(--graphite)',
               marginBottom: '8px',
             }}
           >
@@ -385,6 +408,50 @@ const AppTour: React.FC = () => {
             {step.body}
           </p>
 
+          {/* Live theme picker */}
+          {step.theme && (
+            <div className="flex flex-wrap gap-2" style={{ marginBottom: '18px' }}>
+              {themes.map((t) => {
+                const activeT = theme === t.key;
+                return (
+                  <button
+                    key={t.key}
+                    onClick={() => applyTheme(t.key)}
+                    aria-pressed={activeT}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      padding: '6px 12px 6px 6px',
+                      borderRadius: '10px',
+                      border: activeT ? '2px solid var(--clay)' : '2px solid var(--hair)',
+                      background: activeT ? 'rgba(194,120,92,0.10)' : 'transparent',
+                      cursor: 'pointer',
+                      fontFamily: 'DM Sans, sans-serif',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      color: 'var(--graphite)',
+                    }}
+                  >
+                    <span
+                      style={{
+                        display: 'inline-flex',
+                        borderRadius: '6px',
+                        overflow: 'hidden',
+                        boxShadow: '0 0 0 1px rgba(0,0,0,0.08)',
+                      }}
+                    >
+                      {t.swatch.map((c, i) => (
+                        <span key={i} style={{ width: '13px', height: '20px', background: c }} />
+                      ))}
+                    </span>
+                    {t.label}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+
           {/* Config location */}
           {step.file && (
             <div
@@ -400,7 +467,7 @@ const AppTour: React.FC = () => {
                 style={{
                   fontFamily: 'JetBrains Mono, monospace',
                   fontSize: '11px',
-                  color: '#4A6E84',
+                  color: 'var(--blue-dark)',
                   fontWeight: 600,
                 }}
               >
@@ -414,7 +481,7 @@ const AppTour: React.FC = () => {
                       style={{
                         fontFamily: 'JetBrains Mono, monospace',
                         fontSize: '10px',
-                        color: '#6E8CA0',
+                        color: 'var(--blue)',
                         background: 'rgba(110,140,160,0.12)',
                         border: '1px solid rgba(110,140,160,0.2)',
                         borderRadius: '6px',
@@ -438,7 +505,7 @@ const AppTour: React.FC = () => {
                 fontFamily: 'DM Sans, sans-serif',
                 fontSize: '13px',
                 fontWeight: 600,
-                color: isFirst ? 'rgba(59,59,59,0.25)' : '#6B6B6B',
+                color: isFirst ? 'rgba(59,59,59,0.25)' : 'var(--graphite-light)',
                 background: 'none',
                 border: 'none',
                 cursor: isFirst ? 'default' : 'pointer',
@@ -453,8 +520,8 @@ const AppTour: React.FC = () => {
                 fontFamily: 'DM Sans, sans-serif',
                 fontSize: '13px',
                 fontWeight: 600,
-                color: '#F5F0EB',
-                background: '#C2785C',
+                color: 'var(--parchment)',
+                background: 'var(--clay)',
                 border: 'none',
                 borderRadius: '10px',
                 padding: '10px 20px',

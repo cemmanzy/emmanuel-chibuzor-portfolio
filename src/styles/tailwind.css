@@ -3,20 +3,100 @@
 @tailwind utilities;
 
 
-:root {
-  --parchment: #F5F0EB;
-  --graphite: #3B3B3B;
-  --graphite-light: #6B6B6B;
-  --blue: #6E8CA0;
-  --blue-light: #8AAFC4;
-  --blue-dark: #4A6E84;
-  --clay: #C2785C;
-  --clay-light: #D4917A;
-  --clay-dark: #A85E42;
-  --dark: #2A2A2A;
-  --dark-surface: #1E1E1E;
-  --parchment-dark: #EDE6DC;
-  --parchment-deeper: #E0D7CB;
+/* ── Theming ────────────────────────────────────────────────────────────────
+ * Every color is a CSS variable, so the whole site is theme-switchable at
+ * runtime — see the in-app tour's "Theme" step. To ADD a theme: add a
+ * :root[data-theme="<key>"] block below AND a matching entry in the `themes`
+ * array in src/config/portfolio.ts.
+ *   --surface : solid card background (essay / peer cards)
+ *   --card    : translucent panel background (diagram, metrics, heatmap)
+ *   --nav     : translucent sticky-nav background
+ *   --hair    : hairline border
+ * ------------------------------------------------------------------------- */
+
+/* Parchment — the default (also used when no data-theme is set). */
+:root,
+:root[data-theme='parchment'] {
+  --parchment: #f5f0eb;
+  --parchment-dark: #ede6dc;
+  --parchment-deeper: #e0d7cb;
+  --graphite: #3b3b3b;
+  --graphite-light: #6b6b6b;
+  --blue: #6e8ca0;
+  --blue-light: #8aafc4;
+  --blue-dark: #4a6e84;
+  --clay: #c2785c;
+  --clay-light: #d4917a;
+  --clay-dark: #a85e42;
+  --dark: #2a2a2a;
+  --dark-surface: #1e1e1e;
+  --surface: #ffffff;
+  --card: rgba(255, 255, 255, 0.5);
+  --nav: rgba(245, 240, 235, 0.85);
+  --hair: rgba(59, 59, 59, 0.06);
+}
+
+/* Slate — cool blue-grey with a terracotta accent. */
+:root[data-theme='slate'] {
+  --parchment: #edf0f4;
+  --parchment-dark: #e2e7ec;
+  --parchment-deeper: #d6dde4;
+  --graphite: #26313b;
+  --graphite-light: #5c6772;
+  --blue: #3e7ca6;
+  --blue-light: #7aa3bd;
+  --blue-dark: #2d5c80;
+  --clay: #c2785c;
+  --clay-light: #d4917a;
+  --clay-dark: #a85e42;
+  --dark: #1e252c;
+  --dark-surface: #161c22;
+  --surface: #ffffff;
+  --card: rgba(255, 255, 255, 0.55);
+  --nav: rgba(237, 240, 244, 0.85);
+  --hair: rgba(38, 49, 59, 0.08);
+}
+
+/* Sage — soft greens with a warm amber accent. */
+:root[data-theme='sage'] {
+  --parchment: #eef1e7;
+  --parchment-dark: #e4e8db;
+  --parchment-deeper: #d8decb;
+  --graphite: #2e3a2b;
+  --graphite-light: #5c6658;
+  --blue: #5b8c5a;
+  --blue-light: #82ad80;
+  --blue-dark: #3d643c;
+  --clay: #b8824a;
+  --clay-light: #ce9e6c;
+  --clay-dark: #966434;
+  --dark: #20261e;
+  --dark-surface: #181d16;
+  --surface: #ffffff;
+  --card: rgba(255, 255, 255, 0.5);
+  --nav: rgba(238, 241, 231, 0.85);
+  --hair: rgba(46, 58, 43, 0.08);
+}
+
+/* Midnight — dark mode. */
+:root[data-theme='midnight'] {
+  --parchment: #1b1f24;
+  --parchment-dark: #21262c;
+  --parchment-deeper: #282e35;
+  --graphite: #e7e3dc;
+  --graphite-light: #a5a59e;
+  --blue: #7aa2ba;
+  --blue-light: #96bace;
+  --blue-dark: #6088a0;
+  --clay: #d08a5e;
+  --clay-light: #e0a480;
+  --clay-dark: #b06c46;
+  --dark: #282e35;
+  --dark-surface: #21262c;
+  --surface: #22282f;
+  --card: rgba(255, 255, 255, 0.04);
+  --nav: rgba(27, 31, 36, 0.9);
+  --hair: rgba(255, 255, 255, 0.08);
 }
 
 * {
@@ -35,6 +115,9 @@ body {
   font-family: 'DM Sans', sans-serif;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  transition:
+    background-color 0.45s ease,
+    color 0.45s ease;
 }
 
 /* Grain overlay */
@@ -175,7 +258,7 @@ body {
 .diagram-container {
   width: 100%;
   max-width: 560px;
-  background: rgba(255, 255, 255, 0.5);
+  background: var(--card);
   border-radius: 16px;
   padding: 32px;
   border: 1px solid rgba(110, 140, 160, 0.15);
@@ -319,10 +402,10 @@ body {
 
 /* Essay cards */
 .essay-card {
-  background: white;
+  background: var(--surface);
   border-radius: 16px;
   overflow: hidden;
-  border: 1px solid rgba(59, 59, 59, 0.06);
+  border: 1px solid var(--hair);
   box-shadow: 0 4px 20px rgba(42, 42, 42, 0.04);
   transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
   cursor: pointer;
@@ -471,10 +554,10 @@ body {
 
 /* Peer card */
 .peer-card {
-  background: white;
+  background: var(--surface);
   border-radius: 20px;
   padding: 32px;
-  border: 1px solid rgba(59, 59, 59, 0.06);
+  border: 1px solid var(--hair);
   box-shadow: 0 4px 24px rgba(42, 42, 42, 0.04);
   transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
 }
@@ -487,10 +570,10 @@ body {
 
 /* Nav */
 .nav-glass {
-  background: rgba(245, 240, 235, 0.85);
+  background: var(--nav);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(59, 59, 59, 0.06);
+  border-bottom: 1px solid var(--hair);
 }
 
 /* Animated underline */
