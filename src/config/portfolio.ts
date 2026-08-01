@@ -24,12 +24,12 @@
  * Shown in the browser tab and by search engines & social cards. */
 export const site = {
   /** Short brand shown in the header & footer (e.g. a handle or initials). */
-  brand: 'SA',
+  brand: 'yourname',
   /** <title> tag. */
-  title: 'SA — Delivering Securely',
+  title: 'Your Name — Portfolio',
   /** <meta name="description">. Keep it under ~160 characters. */
   description:
-    'The workshop for explaining SDLC rolesets who ships real things. Projects, essays, and open-source contributions — hand-finished, annotated, and honest.',
+    'A fork-ready developer portfolio — projects, essays, and open-source work, hand-finished and annotated. Edit one config file to make it yours.',
   /** Path (in /public) to the logo used in the header, footer and favicon. */
   logo: '/assets/images/app_logo.png',
 };
@@ -37,31 +37,31 @@ export const site = {
 /* ── 2. Person ─────────────────────────────────────────────────────────────
  * Who you are. Drives the hero "name spine", header, and footer. */
 export const person = {
-  firstName: 'Shariq',
-  lastName: 'Ali',
+  firstName: 'Your',
+  lastName: 'Name',
   /** The small eyebrow above your name (your title / role). */
-  role: 'Senior SDLC Trainer',
+  role: 'Your Role',
   /** One or two sentences under your name in the hero. */
-  bio: 'I train students and professionals in SDLC, Product Dev, Design and Deploy ',
+  bio: 'One or two sentences on what you build and the value you bring. Replace this with your own story — this is the first thing visitors read.',
   /** City, Country — shown next to the availability dot. */
-  location: 'Bareilly, India',
+  location: 'Your City, Country',
   /** Short availability line (set to '' to hide the green pulse + text). */
-  availability: 'Open to senior/lead Training roles',
+  availability: 'Open to new opportunities',
   /** Path (in /public) to your résumé PDF. */
   resumeUrl: 'assets/resume/resume.pdf',
   /** Skill pills under your bio. Add/remove freely. */
-  skills: ['Design', 'Agile', 'Test', 'Build', 'Design', 'Deploy'],
+  skills: ['Skill One', 'Skill Two', 'Skill Three', 'Skill Four', 'Skill Five', 'Skill Six'],
 };
 
 /* ── 3. Social links ───────────────────────────────────────────────────────
  * `githubUsername` also powers the live contribution heatmap in "Peer Signal".
  * Leave any URL as '' to hide that icon. */
 export const social = {
-  githubUsername: 'vpnsin',
-  github: 'https://github.com/vpnsin',
-  twitter: 'https://twitter.com/vpnsin',
-  linkedin: 'https://www.linkedin.com/in/vipin-k-singh/',
-  email: 'test@gmail.com',
+  githubUsername: 'octocat',
+  github: 'https://github.com/octocat',
+  twitter: 'https://twitter.com/yourhandle',
+  linkedin: 'https://www.linkedin.com/in/yourhandle/',
+  email: '',
 };
 
 /* ── 4. Hero ───────────────────────────────────────────────────────────────
@@ -153,7 +153,7 @@ export const projects: Project[] = [
 It uses a hierarchical composition pattern with environment-aware variable injection — no duplication, just DRY modules and clean separation of concerns. Ships with built-in validation, drift detection, and automated documentation generation.`,
     year: '2025',
     embed: 'code',
-    repoUrl: 'https://github.com/vpnsin',
+    repoUrl: 'https://github.com/octocat',
     reversed: false,
   },
   {
@@ -168,7 +168,7 @@ It uses a hierarchical composition pattern with environment-aware variable injec
 The orchestrator uses Terraform to provision dynamic runner pools based on queue depth, with intelligent matrix splitting and reusable workflow composition. Build times dropped from 45 minutes to 8 minutes average.`,
     year: '2025',
     embed: 'cli',
-    repoUrl: 'https://github.com/vpnsin',
+    repoUrl: 'https://github.com/octocat',
     reversed: true,
   },
   {
@@ -183,7 +183,7 @@ The orchestrator uses Terraform to provision dynamic runner pools based on queue
 Terraform-managed GHAS rollout across 200+ repos with custom CodeQL queries, secret scanning alerts routed to Slack, and dependency review gates in PRs. The part I'm most proud of: the policy framework that auto-remediates common issues without human intervention.`,
     year: '2026 ↗',
     embed: 'metrics',
-    repoUrl: 'https://github.com/vpnsin',
+    repoUrl: 'https://github.com/octocat',
     reversed: false,
   },
 ];
@@ -315,7 +315,7 @@ export const testimonials: Testimonial[] = [
     name: 'Sumit Kumar',
     title: 'Senior Application Engineer',
     company: 'SAP Labs',
-    linkedin: 'https://www.linkedin.com/in/vipin-k-singh/',
+    linkedin: '#',
     avatar: '',
     context: 'After a conference talk',
   },
