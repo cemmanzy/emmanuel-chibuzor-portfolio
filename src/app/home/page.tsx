@@ -1,41 +1,35 @@
 import React from 'react';
+
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+
 import HeroSection from './components/HeroSection';
 import ProjectSpotlight from './components/ProjectSpotlight';
-import EssayGallery from './components/EssayGallery';
-import PeerSignal from './components/PeerSignal';
-import AppTour from '@/components/tour/AppTour';
+import AboutSection from './components/AboutSection';
 
 export default function HomePage() {
   return (
-    <main className="relative bg-parchment">
+    <main className="relative min-h-screen overflow-x-hidden bg-parchment">
       {/* Grain overlay */}
-      <div className="grain-overlay" aria-hidden="true" />
+      <div
+        className="grain-overlay"
+        aria-hidden="true"
+      />
 
       {/* Navigation */}
       <Header />
 
-      {/* Hero — scroll-jacked vignette system */}
+      {/* Hero */}
       <HeroSection />
 
-      {/* Spacer so page can scroll after hero releases */}
-      <div style={{ height: '1px' }} />
-
-      {/* Project Spotlight — alternating 60/40 */}
+      {/* Selected work */}
       <ProjectSpotlight />
 
-      {/* Essay Gallery — rotated card grid */}
-      <EssayGallery />
-
-      {/* Peer Signal — testimonials + GitHub heatmap */}
-      <PeerSignal />
+      {/* About + Skills + Experience */}
+      <AboutSection />
 
       {/* Footer */}
       <Footer />
-
-      {/* Guided "what can I change?" tour for people forking the template */}
-      <AppTour />
     </main>
   );
 }

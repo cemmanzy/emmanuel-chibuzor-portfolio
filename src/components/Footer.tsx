@@ -1,97 +1,381 @@
+'use client';
+
 import React from 'react';
+
 import AppLogo from '@/components/ui/AppLogo';
-import { site, person, social, nav } from '@/config/portfolio';
+
+import { site, person, social } from '@/config/portfolio';
 
 const YEAR = 2026;
 
 const Footer: React.FC = () => {
-  const links = [
-    ...nav.links,
-    { label: 'Home', href: '#' },
-    ...(person.resumeUrl
-      ? [{ label: 'Resume', href: person.resumeUrl, target: '_blank', download: true }]
-      : []),
+  const navigation = [
+    { label: 'Home', href: '#home' },
+    { label: 'Work', href: '#work' },
+    { label: 'About', href: '#about' },
+    { label: 'Skills', href: '#skills' },
+    { label: 'Experience', href: '#experience' },
   ];
 
   return (
-    <footer className="border-t py-10 bg-parchment" style={{ borderColor: 'var(--hair)' }}>
-      <div className="max-w-7xl mx-auto px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-        {/* Left: Logo + links */}
-        <div className="flex items-center gap-8">
-          <AppLogo src={site.logo} size={48} />
-          <nav className="flex items-center gap-6">
-            {links.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                {...('target' in link ? { target: link.target } : {})}
-                className="text-sm font-medium text-graphite-light hover:text-graphite transition-colors duration-200"
+    <footer
+      className="border-t bg-parchment"
+      style={{
+        borderColor: 'var(--hair)',
+      }}
+    >
+      {/* ─────────────────────────────────────────────────────────────
+          Closing CTA
+      ────────────────────────────────────────────────────────────── */}
+
+      <div className="mx-auto max-w-7xl px-6 py-20 sm:px-8 sm:py-28">
+        <div
+          className="overflow-hidden rounded-[2rem] p-7 sm:p-10 lg:p-14"
+          style={{
+            background: 'var(--graphite)',
+            color: 'var(--parchment)',
+          }}
+        >
+          <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:items-end">
+            <div className="max-w-3xl">
+              <span
+                className="font-mono text-[9px] uppercase tracking-[0.3em]"
                 style={{
-                  fontFamily: 'DM Sans, sans-serif',
-                  color: 'var(--graphite-light)',
-                  fontSize: '14px',
+                  color: 'rgba(245,240,235,0.5)',
+                  fontFamily: 'JetBrains Mono, monospace',
                 }}
               >
-                {link.label}
-              </a>
-            ))}
-          </nav>
-        </div>
+                Let&apos;s work together
+              </span>
 
-        {/* Right: Social + copyright */}
-        <div className="flex items-center gap-6">
-          {/* GitHub */}
-          {social.github && (
+              <h2
+                className="mt-5 font-serif font-light"
+                style={{
+                  fontFamily: 'Fraunces, serif',
+                  fontSize:
+                    'clamp(2.5rem, 6vw, 5.5rem)',
+                  lineHeight: 0.95,
+                  letterSpacing: '-0.035em',
+                }}
+              >
+                Let&apos;s build something
+                <br />
+                <em>useful.</em>
+              </h2>
+
+              <p
+                className="mt-6 max-w-xl text-sm leading-7 sm:text-base"
+                style={{
+                  color:
+                    'rgba(245,240,235,0.62)',
+                  fontFamily: 'DM Sans, sans-serif',
+                }}
+              >
+                I&apos;m open to remote Full-Stack Developer
+                opportunities, freelance projects, and
+                collaborations with teams building useful
+                digital products.
+              </p>
+            </div>
+
             <a
-              href={social.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-graphite-light hover:text-graphite transition-colors duration-200"
-              aria-label="GitHub"
+              href="mailto:cemmanzy@gmail.com"
+              className="inline-flex w-fit items-center gap-3 rounded-full px-6 py-3.5 text-sm font-medium transition-all duration-200 hover:-translate-y-0.5"
+              style={{
+                background: 'var(--parchment)',
+                color: 'var(--graphite)',
+                fontFamily: 'DM Sans, sans-serif',
+              }}
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32 32">
-                <path d="M16,2.345c7.735,0,14,6.265,14,14-.002,6.015-3.839,11.359-9.537,13.282-.7,.14-.963-.298-.963-.665,0-.473,.018-1.978,.018-3.85,0-1.312-.437-2.152-.945-2.59,3.115-.35,6.388-1.54,6.388-6.912,0-1.54-.543-2.783-1.435-3.762,.14-.35,.63-1.785-.14-3.71,0,0-1.173-.385-3.85,1.435-1.12-.315-2.31-.472-3.5-.472s-2.38,.157-3.5,.472c-2.677-1.802-3.85-1.435-3.85-1.435-.77,1.925-.28,3.36-.14,3.71-.892,.98-1.435,2.24-1.435,3.762,0,5.355,3.255,6.563,6.37,6.913-.403,.35-.77,.963-.893,1.872-.805,.368-2.818,.963-4.077-1.155-.263-.42-1.05-1.452-2.152-1.435-1.173,.018-.472,.665,.017,.927,.595,.332,1.277,1.575,1.435,1.978,.28,.787,1.19,2.293,4.707,1.645,0,1.173,.018,2.275,.018,2.607,0,.368-.263,.787-.963,.665-5.719-1.904-9.576-7.255-9.573-13.283,0-7.735,6.265-14,14-14Z"></path>
-              </svg>
+              Send me an email
+              <span aria-hidden="true">↗</span>
             </a>
-          )}
-          {/* Twitter/X */}
-          {social.twitter && (
-            <a
-              href={social.twitter}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-graphite-light hover:text-graphite transition-colors duration-200"
-              aria-label="Twitter"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32 32">
-                <path d="M18.42,14.009L27.891,3h-2.244l-8.224,9.559L10.855,3H3.28l9.932,14.455L3.28,29h2.244l8.684-10.095,6.936,10.095h7.576l-10.301-14.991h0Zm-3.074,3.573l-1.006-1.439L6.333,4.69h3.447l6.462,9.243,1.006,1.439,8.4,12.015h-3.447l-6.854-9.804h0Z"></path>
-              </svg>
-            </a>
-          )}
-          {/* LinkedIn */}
-          {social.linkedin && (
-            <a
-              href={social.linkedin}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-graphite-light hover:text-graphite transition-colors duration-200"
-              aria-label="LinkedIn"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32 32">
-                <path d="M26.111,3H5.889c-1.595,0-2.889,1.293-2.889,2.889V26.111c0,1.595,1.293,2.889,2.889,2.889H26.111c1.595,0,2.889-1.293,2.889-2.889V5.889c0-1.595-1.293-2.889-2.889-2.889ZM10.861,25.389h-3.877V12.87h3.877v12.519Zm-1.957-14.158c-1.267,0-2.293-1.034-2.293-2.31s1.026-2.31,2.293-2.31,2.292,1.034,2.292,2.31-1.026,2.31-2.292,2.31Zm16.485,14.158h-3.858v-6.571c0-1.802-.685-2.809-2.111-2.809-1.551,0-2.362,1.048-2.362,2.809v6.571h-3.718V12.87h3.718v1.686s1.118-2.069,3.775-2.069,4.556,1.621,4.556,4.975v7.926Z"></path>
-              </svg>
-            </a>
-          )}
-          <span
-            className="text-sm text-graphite-light"
+          </div>
+        </div>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────
+          Main footer
+      ────────────────────────────────────────────────────────────── */}
+
+      <div
+        className="border-t"
+        style={{
+          borderColor: 'var(--hair)',
+        }}
+      >
+        <div className="mx-auto max-w-7xl px-6 py-14 sm:px-8 sm:py-16">
+          <div className="grid gap-12 md:grid-cols-[1.4fr_0.8fr_0.8fr_1fr]">
+            {/* Brand */}
+            <div>
+              <a
+                href="#home"
+                className="inline-flex items-center gap-3"
+              >
+                <AppLogo
+                  src={site.logo}
+                  size={42}
+                />
+
+                <span
+                  className="text-base font-semibold"
+                  style={{
+                    fontFamily:
+                      'DM Sans, sans-serif',
+                    color:
+                      'var(--graphite)',
+                  }}
+                >
+                  {site.brand}
+                </span>
+              </a>
+
+              <p
+                className="mt-5 max-w-xs text-sm leading-7"
+                style={{
+                  color:
+                    'var(--graphite-light)',
+                  fontFamily:
+                    'DM Sans, sans-serif',
+                }}
+              >
+                Full-Stack Developer building fast,
+                scalable web applications and digital
+                products with modern technologies.
+              </p>
+
+              <div className="mt-6 flex items-center gap-3">
+                <span
+                  className="relative flex h-2 w-2"
+                  aria-hidden="true"
+                >
+                  <span
+                    className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"
+                    style={{
+                      background:
+                        '#28CA42',
+                    }}
+                  />
+
+                  <span
+                    className="relative inline-flex h-2 w-2 rounded-full"
+                    style={{
+                      background:
+                        '#28CA42',
+                    }}
+                  />
+                </span>
+
+                <span
+                  className="font-mono text-[9px] uppercase tracking-wider"
+                  style={{
+                    color:
+                      'var(--graphite-light)',
+                  }}
+                >
+                  Available for remote work
+                </span>
+              </div>
+            </div>
+
+            {/* Navigation */}
+            <div>
+              <span
+                className="font-mono text-[9px] uppercase tracking-[0.25em]"
+                style={{
+                  color: 'var(--blue)',
+                }}
+              >
+                Navigate
+              </span>
+
+              <nav className="mt-5 flex flex-col gap-3">
+                {navigation.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    className="w-fit text-sm transition-colors duration-200 hover:text-graphite"
+                    style={{
+                      color:
+                        'var(--graphite-light)',
+                      fontFamily:
+                        'DM Sans, sans-serif',
+                    }}
+                  >
+                    {link.label}
+                  </a>
+                ))}
+              </nav>
+            </div>
+
+            {/* Connect */}
+            <div>
+              <span
+                className="font-mono text-[9px] uppercase tracking-[0.25em]"
+                style={{
+                  color: 'var(--clay)',
+                }}
+              >
+                Connect
+              </span>
+
+              <nav className="mt-5 flex flex-col gap-3">
+                <a
+                  href={social.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-fit text-sm transition-colors duration-200 hover:text-graphite"
+                  style={{
+                    color:
+                      'var(--graphite-light)',
+                    fontFamily:
+                      'DM Sans, sans-serif',
+                  }}
+                >
+                  LinkedIn
+                </a>
+
+                <a
+                  href={social.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-fit text-sm transition-colors duration-200 hover:text-graphite"
+                  style={{
+                    color:
+                      'var(--graphite-light)',
+                    fontFamily:
+                      'DM Sans, sans-serif',
+                  }}
+                >
+                  GitHub
+                </a>
+
+                <a
+                  href="mailto:cemmanzy@gmail.com"
+                  className="w-fit break-all text-sm transition-colors duration-200 hover:text-graphite"
+                  style={{
+                    color:
+                      'var(--graphite-light)',
+                    fontFamily:
+                      'DM Sans, sans-serif',
+                  }}
+                >
+                  cemmanzy@gmail.com
+                </a>
+              </nav>
+            </div>
+
+            {/* Location + Resume */}
+            <div>
+              <span
+                className="font-mono text-[9px] uppercase tracking-[0.25em]"
+                style={{
+                  color:
+                    'var(--graphite-light)',
+                }}
+              >
+                Based in
+              </span>
+
+              <p
+                className="mt-5 text-sm"
+                style={{
+                  color:
+                    'var(--graphite)',
+                  fontFamily:
+                    'DM Sans, sans-serif',
+                }}
+              >
+                {person.location}
+              </p>
+
+              <p
+                className="mt-2 max-w-xs text-sm leading-6"
+                style={{
+                  color:
+                    'var(--graphite-light)',
+                }}
+              >
+                Working remotely with teams and
+                clients worldwide.
+              </p>
+
+              {person.resumeUrl && (
+                <a
+                  href={`/${person.resumeUrl.replace(
+                    /^\/+/,
+                    '',
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-5 inline-flex rounded-full border px-4 py-2.5 text-xs font-medium transition-all duration-200 hover:-translate-y-0.5"
+                  style={{
+                    borderColor:
+                      'rgba(59,59,59,0.14)',
+                    color:
+                      'var(--graphite)',
+                    fontFamily:
+                      'DM Sans, sans-serif',
+                  }}
+                >
+                  View Resume ↗
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────
+          Bottom bar
+      ────────────────────────────────────────────────────────────── */}
+
+      <div
+        className="border-t"
+        style={{
+          borderColor: 'var(--hair)',
+        }}
+      >
+        <div className="mx-auto flex max-w-7xl flex-col gap-4 px-6 py-6 sm:px-8 md:flex-row md:items-center md:justify-between">
+          <p
+            className="font-mono text-[9px] uppercase tracking-wider"
             style={{
-              fontFamily: 'DM Sans, sans-serif',
-              fontSize: '13px',
-              color: 'var(--graphite-light)',
+              color:
+                'var(--graphite-light)',
             }}
           >
-            © {YEAR} {site.brand}
-          </span>
+            © {YEAR} {site.brand}. All rights reserved.
+          </p>
+
+          <div className="flex flex-wrap items-center gap-4">
+            <span
+              className="font-mono text-[9px] uppercase tracking-wider"
+              style={{
+                color:
+                  'var(--graphite-light)',
+              }}
+            >
+              Lagos, Nigeria
+            </span>
+
+            <span
+              className="h-1 w-1 rounded-full"
+              style={{
+                background:
+                  'var(--graphite-light)',
+              }}
+            />
+
+            <span
+              className="font-mono text-[9px] uppercase tracking-wider"
+              style={{
+                color:
+                  'var(--graphite-light)',
+              }}
+            >
+              Remote worldwide
+            </span>
+          </div>
         </div>
       </div>
     </footer>

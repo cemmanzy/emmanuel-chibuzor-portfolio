@@ -1,328 +1,652 @@
 'use client';
 
-import Image from 'next/image';
-import React, { useState, useEffect, useRef, useCallback } from 'react';
-import { hero, person } from '@/config/portfolio';
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 
-// ─── Vignette 1: Terminal ─────────────────────────────────────────────────────
-const TerminalVignette: React.FC<{ active: boolean }> = ({ active }) => {
+import { person, social } from '@/config/portfolio';
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * Desktop vignette 1 — Build
+ * ────────────────────────────────────────────────────────────────────────── */
+
+const BuildVignette: React.FC<{ active: boolean }> = ({
+  active,
+}) => {
   const lines = [
-    { type: 'prompt', text: hero.terminalPrompt },
-    { type: 'command', text: hero.terminalCommand },
-    ...hero.terminalCommits.map((text) => ({ type: 'output', text })),
+    { type: 'prompt', text: '~/emmanuel' },
+    { type: 'command', text: 'npm run build' },
+    { type: 'output', text: '✓ Compiled successfully' },
+    { type: 'output', text: '✓ TypeScript checks passed' },
+    { type: 'output', text: '✓ Production build ready' },
   ];
 
   const [visibleLines, setVisibleLines] = useState(0);
-  const lineCount = lines.length;
 
   useEffect(() => {
-    let interval: ReturnType<typeof setInterval> | undefined;
-    // Defer the reset so we never call setState synchronously in the effect body.
-    const kickoff = setTimeout(() => {
-      setVisibleLines(0);
-      if (!active) return;
-      let i = 0;
-      interval = setInterval(() => {
-        i++;
-        setVisibleLines(i);
-        if (i >= lineCount) clearInterval(interval);
-      }, 200);
-    }, 0);
-    return () => {
-      clearTimeout(kickoff);
-      if (interval) clearInterval(interval);
-    };
-  }, [active, lineCount]);
+  let interval: number | undefined;
+
+  const kickoff = window.setTimeout(() => {
+    setVisibleLines(0);
+
+    if (!active) return;
+
+    let i = 0;
+
+    interval = window.setInterval(() => {
+      i += 1;
+      setVisibleLines(i);
+
+      if (i >= lines.length) {
+        if (interval !== undefined) {
+          window.clearInterval(interval);
+        }
+      }
+    }, 220);
+  }, 0);
+
+  return () => {
+    window.clearTimeout(kickoff);
+
+    if (interval !== undefined) {
+      window.clearInterval(interval);
+    }
+  };
+}, [active, lines.length]);
 
   return (
-    <div className="terminal-window w-full">
-      <div className="terminal-bar">
-        <div className="terminal-dot" style={{ background: '#FF5F57' }} />
-        <div className="terminal-dot" style={{ background: '#FFBD2E' }} />
-        <div className="terminal-dot" style={{ background: '#28CA42' }} />
-        <span
-          className="ml-3 font-mono text-xs"
-          style={{ color: '#6B7280', fontFamily: 'JetBrains Mono, monospace' }}
-        >
-          {hero.terminalTitle}
-        </span>
-      </div>
-      <div className="terminal-body">
-        {lines.slice(0, visibleLines).map((line, i) => (
-          <div key={i} className="flex gap-2">
-            {line.type === 'prompt' && (
-              <>
-                <span className="terminal-prompt">❯</span>
-                <span style={{ color: 'var(--blue-light)' }}>{line.text}</span>
-                <span className="terminal-prompt ml-1">%</span>
-              </>
-            )}
-            {line.type === 'command' && (
-              <>
-                <span className="terminal-prompt">❯</span>
-                <span style={{ color: '#EEFFFF' }}>{line.text}</span>
-              </>
-            )}
-            {line.type === 'output' && (
-              <span className="terminal-output pl-4">
-                <span className="terminal-highlight">{line.text.split(' ')[0]}</span>{' '}
-                <span style={{ color: 'var(--blue)' }}>{line.text.split(' ')[1]}</span>{' '}
-                <span>{line.text.split(' ').slice(2).join(' ')}</span>
-              </span>
-            )}
-          </div>
-        ))}
-        {visibleLines < lines.length && active && <span className="terminal-cursor" />}
-      </div>
-    </div>
-  );
-};
-
-// ─── Vignette 2: SVG Architecture Diagram ────────────────────────────────────
-const DiagramVignette: React.FC<{ active: boolean }> = ({ active }) => {
-  const [drawing, setDrawing] = useState(false);
-  const { label, caption, nodes, arrows, annotations } = hero.diagram;
-  const NODE_W = 100;
-  const NODE_H = 44;
-
-  useEffect(() => {
-    let draw: ReturnType<typeof setTimeout> | undefined;
-    const kickoff = setTimeout(() => {
-      setDrawing(false);
-      if (active) draw = setTimeout(() => setDrawing(true), 100);
-    }, 0);
-    return () => {
-      clearTimeout(kickoff);
-      if (draw) clearTimeout(draw);
-    };
-  }, [active]);
-
-  const pathClass = `diagram-path ${drawing ? 'drawing' : ''}`;
-
-  return (
-    <div className="diagram-container w-full">
-      <div className="mb-4 flex items-center gap-3">
-        <span
-          className="font-mono text-xs tracking-widest uppercase"
+    <div className="w-full max-w-2xl">
+      <div
+        className="overflow-hidden rounded-2xl"
+        style={{
+          background: '#20242A',
+          boxShadow:
+            '0 30px 80px -35px rgba(0,0,0,0.35)',
+        }}
+      >
+        <div
+          className="flex items-center px-5 py-4"
           style={{
-            fontFamily: 'JetBrains Mono, monospace',
-            color: 'var(--blue)',
-            fontSize: '10px',
+            background: '#292E35',
+            borderBottom:
+              '1px solid rgba(255,255,255,0.06)',
           }}
         >
-          {label}
-        </span>
-      </div>
-      <svg
-        viewBox="0 0 520 280"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-full"
-        style={{ overflow: 'visible' }}
-      >
-        {/* Nodes */}
-        {nodes.map((node, i) => (
-          <g key={i}>
-            <rect
-              x={node.x}
-              y={node.y}
-              width={NODE_W}
-              height={NODE_H}
-              rx="8"
-              fill="rgba(245,240,235,0.9)"
-              stroke="#6E8CA0"
-              strokeWidth="1.5"
-              className={pathClass}
-              style={{
-                strokeDasharray: 'none',
-                strokeDashoffset: 'unset',
-                opacity: drawing ? 1 : 0,
-                transition: `opacity 0.4s ease ${i * 0.25}s`,
-              }}
+          <div className="flex gap-1.5">
+            <span
+              className="h-2.5 w-2.5 rounded-full"
+              style={{ background: '#FF5F57' }}
             />
-            <text
-              x={node.x + NODE_W / 2}
-              y={node.y + 18}
-              textAnchor="middle"
-              fill="#3B3B3B"
-              fontSize="11"
-              fontFamily="JetBrains Mono, monospace"
-              fontWeight="600"
-              style={{
-                opacity: drawing ? 1 : 0,
-                transition: `opacity 0.4s ease ${i * 0.25 + 0.1}s`,
-              }}
-            >
-              {node.label}
-            </text>
-            <text
-              x={node.x + NODE_W / 2}
-              y={node.y + 33}
-              textAnchor="middle"
-              fill="#6E8CA0"
-              fontSize="9"
-              fontFamily="JetBrains Mono, monospace"
-              style={{
-                opacity: drawing ? 1 : 0,
-                transition: `opacity 0.4s ease ${i * 0.25 + 0.15}s`,
-              }}
-            >
-              {node.sub}
-            </text>
-          </g>
+            <span
+              className="h-2.5 w-2.5 rounded-full"
+              style={{ background: '#FFBD2E' }}
+            />
+            <span
+              className="h-2.5 w-2.5 rounded-full"
+              style={{ background: '#28CA42' }}
+            />
+          </div>
+
+          <span
+            className="ml-4 font-mono text-[10px]"
+            style={{
+              color: '#8B949E',
+              fontFamily:
+                'JetBrains Mono, monospace',
+            }}
+          >
+            ~/emmanuel — production
+          </span>
+        </div>
+
+        <div
+          className="min-h-[260px] p-6 sm:p-8"
+          style={{
+            fontFamily:
+              'JetBrains Mono, monospace',
+            fontSize: '12px',
+          }}
+        >
+          {lines
+            .slice(0, visibleLines)
+            .map((line, index) => (
+              <div
+                key={index}
+                className="mb-3 flex gap-3"
+              >
+                {line.type === 'prompt' && (
+                  <>
+                    <span
+                      style={{ color: '#7EE787' }}
+                    >
+                      ❯
+                    </span>
+
+                    <span
+                      style={{
+                        color: '#A5D6FF',
+                      }}
+                    >
+                      {line.text}
+                    </span>
+                  </>
+                )}
+
+                {line.type === 'command' && (
+                  <>
+                    <span
+                      style={{ color: '#7EE787' }}
+                    >
+                      ❯
+                    </span>
+
+                    <span
+                      style={{
+                        color: '#F0F6FC',
+                      }}
+                    >
+                      {line.text}
+                    </span>
+                  </>
+                )}
+
+                {line.type === 'output' && (
+                  <>
+                    <span
+                      style={{ color: '#7EE787' }}
+                    >
+                      ✓
+                    </span>
+
+                    <span
+                      style={{
+                        color: '#C9D1D9',
+                      }}
+                    >
+                      {line.text.replace(
+                        '✓ ',
+                        '',
+                      )}
+                    </span>
+                  </>
+                )}
+              </div>
+            ))}
+
+          {visibleLines < lines.length &&
+            active && (
+              <span
+                className="inline-block h-4 w-2 animate-pulse"
+                style={{
+                  background: '#7EE787',
+                }}
+              />
+            )}
+        </div>
+      </div>
+
+      <div className="mt-5 flex flex-wrap gap-2">
+        {[
+          'React',
+          'Next.js',
+          'TypeScript',
+          'Node.js',
+        ].map((item) => (
+          <span
+            key={item}
+            className="rounded-full px-3 py-1.5 font-mono text-[9px] uppercase tracking-wider"
+            style={{
+              color: 'var(--blue)',
+              background:
+                'rgba(62,124,166,0.07)',
+              border:
+                '1px solid rgba(62,124,166,0.12)',
+            }}
+          >
+            {item}
+          </span>
         ))}
-
-        {/* Arrows */}
-        {arrows.map((arrow, i) => (
-          <path
-            key={i}
-            d={arrow.d}
-            stroke="#C2785C"
-            strokeWidth="1.5"
-            strokeDasharray="200"
-            strokeDashoffset={drawing ? '0' : '200'}
-            fill="none"
-            markerEnd="url(#arrowClay)"
-            style={{ transition: `stroke-dashoffset 0.5s ease ${arrow.delay}` }}
-          />
-        ))}
-
-        {/* Annotation labels */}
-        {drawing &&
-          annotations.map((a, i) => (
-            <text
-              key={i}
-              x={a.x}
-              y={a.y}
-              fill="#C2785C"
-              fontSize="9"
-              fontFamily="JetBrains Mono"
-              style={{ opacity: drawing ? 1 : 0, transition: `opacity 0.4s ${a.delay}` }}
-            >
-              {a.text}
-            </text>
-          ))}
-
-        {/* Arrowhead marker */}
-        <defs>
-          <marker id="arrowClay" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
-            <path d="M0,0 L0,6 L8,3 z" fill="#C2785C" />
-          </marker>
-        </defs>
-      </svg>
-      <p
-        className="mt-3 font-mono text-xs"
-        style={{
-          fontFamily: 'JetBrains Mono, monospace',
-          color: 'var(--graphite-light)',
-          fontSize: '11px',
-          lineHeight: 1.6,
-        }}
-      >
-        {caption}
-      </p>
+      </div>
     </div>
   );
 };
 
-// ─── Vignette 3: Typewriter Quote ────────────────────────────────────────────
-const TypewriterVignette: React.FC<{ active: boolean }> = ({ active }) => {
-  const fullText = `"${hero.quote.text}"`;
+/* ────────────────────────────────────────────────────────────────────────────
+ * Desktop vignette 2 — Stack
+ * ────────────────────────────────────────────────────────────────────────── */
 
-  const [displayedText, setDisplayedText] = useState('');
-  const [showAttrib, setShowAttrib] = useState(false);
-  const [typing, setTyping] = useState(false);
-
-  useEffect(() => {
-    let interval: ReturnType<typeof setInterval> | undefined;
-    let attrib: ReturnType<typeof setTimeout> | undefined;
-    const kickoff = setTimeout(() => {
-      setDisplayedText('');
-      setShowAttrib(false);
-      if (!active) {
-        setTyping(false);
-        return;
-      }
-      setTyping(true);
-      let i = 0;
-      interval = setInterval(() => {
-        i++;
-        setDisplayedText(fullText.slice(0, i));
-        if (i >= fullText.length) {
-          clearInterval(interval);
-          setTyping(false);
-          attrib = setTimeout(() => setShowAttrib(true), 400);
-        }
-      }, 28);
-    }, 0);
-    return () => {
-      clearTimeout(kickoff);
-      if (interval) clearInterval(interval);
-      if (attrib) clearTimeout(attrib);
-    };
-  }, [active, fullText]);
+const StackVignette: React.FC<{ active: boolean }> = ({
+  active,
+}) => {
+  const stack = [
+    {
+      category: 'Frontend',
+      technologies: [
+        'React',
+        'Next.js',
+        'TypeScript',
+        'Tailwind CSS',
+      ],
+    },
+    {
+      category: 'Backend',
+      technologies: [
+        'Node.js',
+        'Express.js',
+        'REST APIs',
+      ],
+    },
+    {
+      category: 'Data',
+      technologies: [
+        'MongoDB',
+        'Sanity CMS',
+      ],
+    },
+    {
+      category: 'Tools',
+      technologies: [
+        'Git',
+        'GitHub',
+        'Vercel',
+      ],
+    },
+  ];
 
   return (
-    <div className="w-full max-w-[560px]">
-      {/* Opening quote mark */}
-      <div
-        className="font-serif mb-6 select-none"
-        style={{
-          fontFamily: 'Fraunces, serif',
-          fontSize: '5rem',
-          lineHeight: 1,
-          color: 'var(--clay)',
-          opacity: 0.25,
-          marginBottom: '-1rem',
-        }}
-      >
-        &ldquo;
+    <div
+      className="w-full max-w-2xl"
+      style={{
+        opacity: active ? 1 : 0,
+        transform: active
+          ? 'translateY(0)'
+          : 'translateY(20px)',
+        transition:
+          'opacity 0.7s ease, transform 0.7s cubic-bezier(0.25,1,0.5,1)',
+      }}
+    >
+      <div className="mb-8">
+        <span
+          className="font-mono text-[10px] uppercase tracking-[0.3em]"
+          style={{ color: 'var(--blue)' }}
+        >
+          My toolkit
+        </span>
+
+        <h2
+          className="mt-3 font-serif font-light"
+          style={{
+            fontFamily: 'Fraunces, serif',
+            fontSize:
+              'clamp(2.2rem, 5vw, 4.5rem)',
+            lineHeight: 1,
+            color: 'var(--graphite)',
+          }}
+        >
+          Built across
+          <br />
+          <em>the stack.</em>
+        </h2>
       </div>
 
-      <p className="typewriter-text" style={{ minHeight: '160px' }}>
-        {displayedText}
-        {typing && <span className="typewriter-cursor" />}
-      </p>
-
       <div
-        className="mt-8 flex items-center gap-4"
+        className="overflow-hidden rounded-2xl"
         style={{
-          opacity: showAttrib ? 1 : 0,
-          transition: 'opacity 0.6s ease',
-          transform: showAttrib ? 'translateY(0)' : 'translateY(8px)',
+          background:
+            'rgba(255,255,255,0.45)',
+          border:
+            '1px solid rgba(59,59,59,0.08)',
         }}
       >
-        {hero.quote.avatar && (
-          <div className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0">
-            <Image
-              width={64}
-              height={64}
-              src={hero.quote.avatar}
-              alt={hero.quote.name}
-              className="w-full h-full object-cover"
-            />
+        {stack.map((group, index) => (
+          <div
+            key={group.category}
+            className="p-5 sm:p-6"
+            style={{
+              borderBottom:
+                index !== stack.length - 1
+                  ? '1px solid rgba(59,59,59,0.08)'
+                  : undefined,
+            }}
+          >
+            <div
+              className="mb-3 font-mono text-[9px] uppercase tracking-[0.2em]"
+              style={{
+                color: 'var(--clay)',
+              }}
+            >
+              {group.category}
+            </div>
+
+            <div className="flex flex-wrap gap-2">
+              {group.technologies.map(
+                (technology) => (
+                  <span
+                    key={technology}
+                    className="rounded-lg px-3 py-2 text-xs font-medium"
+                    style={{
+                      background:
+                        'rgba(59,59,59,0.045)',
+                      color:
+                        'var(--graphite)',
+                    }}
+                  >
+                    {technology}
+                  </span>
+                ),
+              )}
+            </div>
           </div>
-        )}
-        <div>
-          <p
-            className="font-mono text-sm font-medium"
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * Desktop vignette 3 — Approach
+ * ────────────────────────────────────────────────────────────────────────── */
+
+const AboutVignette: React.FC<{ active: boolean }> = ({
+  active,
+}) => {
+  return (
+    <div
+      className="w-full max-w-2xl"
+      style={{
+        opacity: active ? 1 : 0,
+        transform: active
+          ? 'translateY(0)'
+          : 'translateY(20px)',
+        transition:
+          'opacity 0.7s ease, transform 0.7s cubic-bezier(0.25,1,0.5,1)',
+      }}
+    >
+      <span
+        className="font-mono text-[10px] uppercase tracking-[0.3em]"
+        style={{ color: 'var(--blue)' }}
+      >
+        A little about me
+      </span>
+
+      <p
+        className="mt-6 font-serif font-light leading-[1.08]"
+        style={{
+          fontFamily: 'Fraunces, serif',
+          fontSize:
+            'clamp(2rem, 4.5vw, 4rem)',
+          color: 'var(--graphite)',
+        }}
+      >
+        I turn ideas into{' '}
+        <em style={{ color: 'var(--clay)' }}>
+          useful products.
+        </em>
+      </p>
+
+      <p
+        className="mt-7 max-w-xl text-base leading-8"
+        style={{
+          fontFamily: 'DM Sans, sans-serif',
+          color: 'var(--graphite-light)',
+        }}
+      >
+        I work across the frontend and backend
+        to build modern web applications that
+        are fast, responsive, maintainable, and
+        ready for real users.
+      </p>
+
+      <div className="mt-8 flex flex-wrap gap-3">
+        <a
+          href="#work"
+          className="rounded-full px-5 py-3 text-sm font-medium transition-transform hover:-translate-y-0.5"
+          style={{
+            background: 'var(--graphite)',
+            color: 'var(--parchment)',
+          }}
+        >
+          View my work →
+        </a>
+
+        <a
+          href={social.linkedin}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-full border px-5 py-3 text-sm font-medium transition-transform hover:-translate-y-0.5"
+          style={{
+            borderColor:
+              'rgba(59,59,59,0.15)',
+            color: 'var(--graphite)',
+          }}
+        >
+          LinkedIn
+        </a>
+      </div>
+    </div>
+  );
+};
+
+/* ────────────────────────────────────────────────────────────────────────────
+ * Mobile hero content
+ * ────────────────────────────────────────────────────────────────────────── */
+
+const MobileHero: React.FC = () => {
+  return (
+    <div className="px-5 pb-14 pt-28">
+      <div className="mx-auto max-w-xl">
+        <div className="mb-4">
+          <span
+            className="font-mono text-[9px] uppercase tracking-[0.28em]"
+            style={{ color: 'var(--clay)' }}
+          >
+            {person.role}
+          </span>
+        </div>
+
+        <h1
+          className="font-serif font-light"
+          style={{
+            fontFamily: 'Fraunces, serif',
+            fontSize: 'clamp(3.5rem, 15vw, 5.5rem)',
+            lineHeight: 0.88,
+            letterSpacing: '-0.04em',
+            color: 'var(--graphite)',
+          }}
+        >
+          Emmanuel
+          <br />
+          <em>Chibuzor</em>
+        </h1>
+
+        <div
+          className="my-6 h-px w-14"
+          style={{ background: 'var(--clay)' }}
+        />
+
+        <p
+          className="max-w-md text-[15px] leading-7"
+          style={{
+            fontFamily: 'DM Sans, sans-serif',
+            color: 'var(--graphite-light)',
+          }}
+        >
+          I build fast, scalable web applications
+          and digital products that turn ideas into
+          reliable experiences for real users.
+        </p>
+
+        <div className="mt-7 flex flex-wrap gap-2.5">
+          <a
+            href="#work"
+            className="rounded-full px-5 py-3 text-sm font-medium"
             style={{
-              fontFamily: 'JetBrains Mono, monospace',
+              background: 'var(--graphite)',
+              color: 'var(--parchment)',
+            }}
+          >
+            View my work →
+          </a>
+
+          <a
+            href="mailto:cemmanzy@gmail.com"
+            className="rounded-full border px-5 py-3 text-sm font-medium"
+            style={{
+              borderColor:
+                'rgba(59,59,59,0.15)',
               color: 'var(--graphite)',
-              fontSize: '13px',
             }}
           >
-            {hero.quote.name}
-          </p>
-          <p
-            className="text-xs mt-0.5"
+            Let&apos;s talk
+          </a>
+        </div>
+
+        <div className="mt-8 flex flex-wrap gap-2">
+          {person.skills.map((skill) => (
+            <span
+              key={skill}
+              className="tag-pill"
+            >
+              {skill}
+            </span>
+          ))}
+        </div>
+
+        <div className="mt-8 flex items-start gap-3">
+          <span className="relative mt-1.5 flex h-2 w-2 shrink-0">
+            <span
+              className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"
+              style={{
+                background: '#28CA42',
+              }}
+            />
+            <span
+              className="relative inline-flex h-2 w-2 rounded-full"
+              style={{
+                background: '#28CA42',
+              }}
+            />
+          </span>
+
+          <span
+            className="font-mono text-[9px] leading-5"
             style={{
-              fontFamily: 'DM Sans, sans-serif',
-              color: 'var(--graphite-light)',
-              fontSize: '12px',
+              color:
+                'var(--graphite-light)',
             }}
           >
-            {hero.quote.title}
+            Available for remote opportunities
+            <br />
+            {person.location}
+          </span>
+        </div>
+
+        <div className="mt-6 flex gap-5">
+          <a
+            href={social.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-[9px] uppercase tracking-wider"
+            style={{
+              color:
+                'var(--graphite-light)',
+            }}
+          >
+            GitHub
+          </a>
+
+          <a
+            href={social.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-mono text-[9px] uppercase tracking-wider"
+            style={{
+              color:
+                'var(--graphite-light)',
+            }}
+          >
+            LinkedIn
+          </a>
+        </div>
+      </div>
+
+      {/* Mobile build card */}
+      <div className="mx-auto mt-12 max-w-xl">
+        <BuildVignette active />
+      </div>
+
+      {/* Mobile mini workflow cards */}
+      <div className="mx-auto mt-10 grid max-w-xl gap-4">
+        <div
+          className="rounded-2xl p-5"
+          style={{
+            background:
+              'rgba(255,255,255,0.45)',
+            border:
+              '1px solid rgba(59,59,59,0.08)',
+          }}
+        >
+          <span
+            className="font-mono text-[9px] uppercase tracking-[0.22em]"
+            style={{ color: 'var(--blue)' }}
+          >
+            My toolkit
+          </span>
+
+          <div className="mt-4 flex flex-wrap gap-2">
+            {[
+              'React',
+              'Next.js',
+              'TypeScript',
+              'Node.js',
+              'MongoDB',
+              'Sanity',
+            ].map((item) => (
+              <span
+                key={item}
+                className="rounded-lg px-3 py-2 text-xs font-medium"
+                style={{
+                  background:
+                    'rgba(59,59,59,0.045)',
+                  color:
+                    'var(--graphite)',
+                }}
+              >
+                {item}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        <div
+          className="rounded-2xl p-5"
+          style={{
+            background:
+              'rgba(194,120,92,0.05)',
+            border:
+              '1px solid rgba(194,120,92,0.12)',
+          }}
+        >
+          <span
+            className="font-mono text-[9px] uppercase tracking-[0.22em]"
+            style={{ color: 'var(--clay)' }}
+          >
+            Approach
+          </span>
+
+          <p
+            className="mt-3 text-sm leading-7"
+            style={{
+              color:
+                'var(--graphite-light)',
+            }}
+          >
+            Clean interfaces. Maintainable code.
+            Responsive experiences. Real products
+            for real users.
           </p>
         </div>
       </div>
@@ -330,270 +654,441 @@ const TypewriterVignette: React.FC<{ active: boolean }> = ({ active }) => {
   );
 };
 
-// ─── Main Hero ────────────────────────────────────────────────────────────────
+/* ────────────────────────────────────────────────────────────────────────────
+ * Main hero
+ * ────────────────────────────────────────────────────────────────────────── */
+
 const HeroSection: React.FC = () => {
-  const [activeVignette, setActiveVignette] = useState(0);
-  const [isLocked, setIsLocked] = useState(true);
-  const [, setScrollDelta] = useState(0);
-  const heroRef = useRef<HTMLDivElement>(null);
+  const [activeVignette, setActiveVignette] =
+    useState(0);
+
   const lockRef = useRef(true);
   const deltaRef = useRef(0);
   const activeRef = useRef(0);
 
-  const THRESHOLD = 120;
-  const TOTAL_VIGNETTES = 3;
+  const threshold = 120;
+  const totalVignettes = 3;
 
-  const advance = useCallback((dir: number) => {
-    const next = activeRef.current + dir;
-    if (next < 0) return;
-    if (next >= TOTAL_VIGNETTES) {
-      // Release lock
-      lockRef.current = false;
-      setIsLocked(false);
-      return;
-    }
-    activeRef.current = next;
-    setActiveVignette(next);
-    deltaRef.current = 0;
-    setScrollDelta(0);
-  }, []);
+  const advance = useCallback(
+    (direction: number) => {
+      const next =
+        activeRef.current + direction;
 
-  useEffect(() => {
-    const handleWheel = (e: WheelEvent) => {
-      if (!lockRef.current) return;
-      e.preventDefault();
-      deltaRef.current += e.deltaY;
-      setScrollDelta(deltaRef.current);
-
-      if (deltaRef.current >= THRESHOLD) {
-        advance(1);
-      } else if (deltaRef.current <= -THRESHOLD) {
-        advance(-1);
-      }
-    };
-
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    return () => window.removeEventListener('wheel', handleWheel);
-  }, [advance]);
-
-  // Re-lock if user scrolls back to top
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY < 10 && !lockRef.current) {
-        lockRef.current = true;
-        setIsLocked(true);
-        activeRef.current = 0;
-        setActiveVignette(0);
+      if (next < 0) {
         deltaRef.current = 0;
+        return;
+      }
+
+      if (next >= totalVignettes) {
+        lockRef.current = false;
+        deltaRef.current = 0;
+
+        window.scrollBy({
+          top: 100,
+          behavior: 'smooth',
+        });
+
+        return;
+      }
+
+      activeRef.current = next;
+      setActiveVignette(next);
+      deltaRef.current = 0;
+    },
+    [],
+  );
+
+  /*
+   * Only enable wheel locking on pointer devices.
+   * Mobile/touch devices use the normal page flow.
+   */
+  useEffect(() => {
+    const mediaQuery = window.matchMedia(
+      '(pointer: fine) and (min-width: 768px)',
+    );
+
+    const setupWheel = () => {
+      if (!mediaQuery.matches) return;
+
+      lockRef.current = true;
+
+      const handleWheel = (
+        event: WheelEvent,
+      ) => {
+        if (!lockRef.current) return;
+
+        event.preventDefault();
+
+        deltaRef.current += event.deltaY;
+
+        if (
+          deltaRef.current >= threshold
+        ) {
+          advance(1);
+        } else if (
+          deltaRef.current <= -threshold
+        ) {
+          advance(-1);
+        }
+      };
+
+      window.addEventListener(
+        'wheel',
+        handleWheel,
+        { passive: false },
+      );
+
+      return () => {
+        window.removeEventListener(
+          'wheel',
+          handleWheel,
+        );
+      };
+    };
+
+    const cleanup = setupWheel();
+
+    const handleMediaChange = () => {
+      if (!mediaQuery.matches) {
+        lockRef.current = false;
       }
     };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
-  const vignetteTitles = ['Recent commit', 'Architecture', 'Peer review'];
-  const vignetteSubs = ['git log', 'event pipeline', 'code review'];
+    mediaQuery.addEventListener(
+      'change',
+      handleMediaChange,
+    );
+
+    return () => {
+      cleanup?.();
+
+      mediaQuery.removeEventListener(
+        'change',
+        handleMediaChange,
+      );
+    };
+  }, [advance]);
 
   return (
     <section
-      ref={heroRef}
+      id="home"
       data-tour="hero"
       className="relative bg-parchment"
-      style={{
-        height: '100vh',
-        overflow: isLocked ? 'hidden' : 'visible',
-        position: isLocked ? 'sticky' : 'relative',
-        top: isLocked ? '5%' : 'auto',
-      }}
-      id="about"
     >
-      {/* Background texture */}
+      {/* Mobile */}
+      <div className="block md:hidden">
+        <MobileHero />
+      </div>
+
+      {/* Desktop */}
       <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage:
-            'radial-gradient(ellipse at 20% 50%, rgba(110,140,160,0.04) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(194,120,92,0.04) 0%, transparent 50%)',
-        }}
-      />
+        className="relative hidden h-[calc(100vh-72px)] min-h-[700px] md:flex"
+        style={{ paddingTop: '0.5rem' }}
+      >
+        {/* Background */}
+        <div
+          className="pointer-events-none absolute inset-0"
+          style={{
+            backgroundImage:
+              'radial-gradient(ellipse at 20% 50%, rgba(110,140,160,0.055) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(194,120,92,0.055) 0%, transparent 50%)',
+          }}
+        />
 
-      <div className="relative h-full flex">
-        {/* ─── 60% Left: Vignette stage ─── */}
-        <div className="relative flex-[6] h-full overflow-hidden" data-tour="hero-stage">
-          {/* Vignette 0: Terminal */}
+        {/* Left */}
+        <div
+          className="relative flex-[6] overflow-hidden"
+          data-tour="hero-stage"
+        >
           <div
-            className={`vignette-panel ${activeVignette === 0 ? 'active' : activeVignette > 0 ? 'exiting' : ''}`}
+            className={`vignette-panel ${
+              activeVignette === 0
+                ? 'active'
+                : activeVignette > 0
+                  ? 'exiting'
+                  : ''
+            }`}
           >
-            <TerminalVignette active={activeVignette === 0} />
+            <BuildVignette active />
           </div>
 
-          {/* Vignette 1: Diagram */}
-          <div className={`vignette-panel ${activeVignette === 1 ? 'active' : ''}`}>
-            <DiagramVignette active={activeVignette === 1} />
+          <div
+            className={`vignette-panel ${
+              activeVignette === 1
+                ? 'active'
+                : ''
+            }`}
+          >
+            <StackVignette
+              active={
+                activeVignette === 1
+              }
+            />
           </div>
 
-          {/* Vignette 2: Typewriter */}
-          <div className={`vignette-panel ${activeVignette === 2 ? 'active' : ''}`}>
-            <TypewriterVignette active={activeVignette === 2} />
+          <div
+            className={`vignette-panel ${
+              activeVignette === 2
+                ? 'active'
+                : ''
+            }`}
+          >
+            <AboutVignette
+              active={
+                activeVignette === 2
+              }
+            />
           </div>
 
-          {/* Progress + scroll hint */}
+          {/* Progress */}
           <div className="vignette-progress">
             <div className="flex items-center gap-3">
               <div className="progress-dots">
-                {[0, 1, 2].map((i) => (
-                  <button
-                    key={i}
-                    className={`progress-dot ${activeVignette === i ? 'active' : ''}`}
-                    onClick={() => {
-                      activeRef.current = i;
-                      setActiveVignette(i);
-                      deltaRef.current = 0;
-                    }}
-                    aria-label={`Go to vignette ${i + 1}`}
-                  />
-                ))}
+                {[0, 1, 2].map(
+                  (index) => (
+                    <button
+                      key={index}
+                      type="button"
+                      className={`progress-dot ${
+                        activeVignette ===
+                        index
+                          ? 'active'
+                          : ''
+                      }`}
+                      onClick={() => {
+                        activeRef.current =
+                          index;
+                        setActiveVignette(
+                          index,
+                        );
+                        deltaRef.current = 0;
+                      }}
+                      aria-label={`Go to ${
+                        index + 1
+                      }`}
+                    />
+                  ),
+                )}
               </div>
+
               <span
-                className="font-mono text-xs"
+                className="font-mono text-[10px] uppercase tracking-wider"
                 style={{
-                  fontFamily: 'JetBrains Mono, monospace',
-                  color: 'var(--graphite-light)',
-                  fontSize: '10px',
-                  letterSpacing: '0.1em',
+                  color:
+                    'var(--graphite-light)',
                 }}
               >
-                {vignetteSubs[activeVignette]}
+                {
+                  [
+                    'production',
+                    'technologies',
+                    'philosophy',
+                  ][activeVignette]
+                }
               </span>
             </div>
 
-            <div className="flex items-center gap-2 mt-1" style={{ opacity: 0.4 }}>
+            <div
+              className="mt-2 flex items-center gap-2"
+              style={{ opacity: 0.45 }}
+            >
               <svg
                 width="14"
                 height="14"
                 viewBox="0 0 24 24"
                 fill="none"
-                stroke="#3B3B3B"
+                stroke="currentColor"
                 strokeWidth="1.5"
+                aria-hidden="true"
               >
                 <path d="M12 5v14M5 12l7 7 7-7" />
               </svg>
-              <span
-                className="font-mono text-xs"
-                style={{
-                  fontFamily: 'JetBrains Mono, monospace',
-                  fontSize: '10px',
-                  color: 'var(--graphite)',
-                  letterSpacing: '0.1em',
-                }}
-              >
-                {activeVignette < 2 ? 'scroll to advance' : 'scroll to continue'}
+
+              <span className="font-mono text-[10px] uppercase tracking-wider">
+                Scroll to explore
               </span>
             </div>
           </div>
 
-          {/* Vignette label top-left */}
-          <div className="absolute top-8 left-12 flex items-center gap-3">
+          <div className="absolute left-10 top-8">
             <span
-              className="font-mono text-xs tracking-widest uppercase"
-              style={{
-                fontFamily: 'JetBrains Mono, monospace',
-                color: 'var(--blue)',
-                fontSize: '10px',
-                letterSpacing: '0.2em',
-              }}
+              className="font-mono text-[10px] uppercase tracking-[0.2em]"
+              style={{ color: 'var(--blue)' }}
             >
-              {String(activeVignette + 1).padStart(2, '0')} / 03 — {vignetteTitles[activeVignette]}
+              {String(
+                activeVignette + 1,
+              ).padStart(2, '0')}{' '}
+              / 03 —{' '}
+              {
+                ['Build', 'Stack', 'Approach'][
+                  activeVignette
+                ]
+              }
             </span>
           </div>
         </div>
 
-        {/* Vertical divider */}
-        <div className="w-px self-stretch" style={{ background: 'var(--hair)' }} />
+        {/* Divider */}
+        <div
+          className="w-px self-stretch"
+          style={{
+            background: 'var(--hair)',
+          }}
+        />
 
-        {/* ─── 40% Right: Name spine ─── */}
-        <div className="name-spine flex-[4]" data-tour="hero-name">
-          {/* Eyebrow */}
+        {/* Right */}
+        <div
+          className="name-spine flex-[4] px-10"
+          data-tour="hero-name"
+        >
           <div className="mb-4">
             <span
-              className="font-mono text-xs tracking-widest uppercase"
+              className="font-mono text-[10px] uppercase tracking-[0.25em]"
               style={{
-                fontFamily: 'JetBrains Mono, monospace',
                 color: 'var(--clay)',
-                fontSize: '10px',
-                letterSpacing: '0.25em',
               }}
             >
               {person.role}
             </span>
           </div>
 
-          {/* Name — the spine */}
           <h1
-            className="font-serif font-light leading-none tracking-tight"
+            className="font-serif font-light"
             style={{
               fontFamily: 'Fraunces, serif',
-              fontSize: 'clamp(2.8rem, 5vw, 5rem)',
+              fontSize:
+                'clamp(3.5rem, 5.5vw, 5.8rem)',
+              lineHeight: 0.92,
+              letterSpacing: '-0.035em',
               color: 'var(--graphite)',
-              lineHeight: 1.05,
-              letterSpacing: '-0.02em',
             }}
           >
-            {person.firstName}
+            Emmanuel
             <br />
-            <span style={{ fontStyle: 'italic', fontWeight: 300 }}>{person.lastName}</span>
+            <em>Chibuzor</em>
           </h1>
 
-          {/* Thin rule */}
-          <div className="my-2 w-12 h-px" style={{ background: 'var(--clay)' }} />
-
-          {/* Short bio */}
-          <p
-            className="font-body text-sm leading-relaxed max-w-xs"
+          <div
+            className="my-6 h-px w-14"
             style={{
-              fontFamily: 'DM Sans, sans-serif',
-              color: 'var(--graphite-light)',
-              fontSize: '14px',
-              lineHeight: 1.75,
+              background:
+                'var(--clay)',
+            }}
+          />
+
+          <p
+            className="max-w-sm text-sm leading-7"
+            style={{
+              color:
+                'var(--graphite-light)',
             }}
           >
-            {person.bio}
+            I build fast, scalable web
+            applications and digital products
+            that turn ideas into reliable
+            experiences for real users.
           </p>
 
-          {/* Stack tags */}
-          <div className="flex flex-wrap gap-2 mt-6">
-            {person.skills.map((tag) => (
-              <span key={tag} className="tag-pill">
-                {tag}
-              </span>
-            ))}
+          <div className="mt-7 flex flex-wrap gap-2.5">
+            <a
+              href="#work"
+              className="rounded-full px-5 py-3 text-xs font-medium transition-transform hover:-translate-y-0.5"
+              style={{
+                background:
+                  'var(--graphite)',
+                color:
+                  'var(--parchment)',
+              }}
+            >
+              View my work →
+            </a>
+
+            <a
+              href="mailto:cemmanzy@gmail.com"
+              className="rounded-full border px-5 py-3 text-xs font-medium transition-transform hover:-translate-y-0.5"
+              style={{
+                borderColor:
+                  'rgba(59,59,59,0.15)',
+                color:
+                  'var(--graphite)',
+              }}
+            >
+              Let&apos;s talk
+            </a>
           </div>
 
-          {/* Location + availability */}
-          {person.availability && (
-            <div className="mt-10 flex items-center gap-3">
-              <span className="relative flex h-2 w-2">
+          <div className="mt-8 flex flex-wrap gap-2">
+            {person.skills.map(
+              (skill) => (
                 <span
-                  className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-75"
-                  style={{ background: '#28CA42' }}
-                />
-                <span
-                  className="relative inline-flex rounded-full h-2 w-2"
-                  style={{ background: '#28CA42' }}
-                />
-              </span>
+                  key={skill}
+                  className="tag-pill"
+                >
+                  {skill}
+                </span>
+              ),
+            )}
+          </div>
+
+          <div className="mt-8 flex items-start gap-3">
+            <span className="relative mt-1.5 flex h-2 w-2 shrink-0">
               <span
-                className="font-mono text-xs"
+                className="absolute inline-flex h-full w-full animate-ping rounded-full opacity-75"
                 style={{
-                  fontFamily: 'JetBrains Mono, monospace',
-                  color: 'var(--graphite-light)',
-                  fontSize: '11px',
+                  background:
+                    '#28CA42',
                 }}
-              >
-                {person.availability}
-                {person.location ? ` · ${person.location}` : ''}
-              </span>
-            </div>
-          )}
+              />
+
+              <span
+                className="relative inline-flex h-2 w-2 rounded-full"
+                style={{
+                  background:
+                    '#28CA42',
+                }}
+              />
+            </span>
+
+            <span
+              className="font-mono text-[10px] leading-5"
+              style={{
+                color:
+                  'var(--graphite-light)',
+              }}
+            >
+              Available for remote
+              opportunities
+              <br />
+              {person.location}
+            </span>
+          </div>
+
+          <div className="mt-6 flex gap-5">
+            <a
+              href={social.github}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-[10px] uppercase tracking-wider transition-opacity hover:opacity-60"
+              style={{
+                color:
+                  'var(--graphite-light)',
+              }}
+            >
+              GitHub
+            </a>
+
+            <a
+              href={social.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-mono text-[10px] uppercase tracking-wider transition-opacity hover:opacity-60"
+              style={{
+                color:
+                  'var(--graphite-light)',
+              }}
+            >
+              LinkedIn
+            </a>
+          </div>
         </div>
       </div>
     </section>
