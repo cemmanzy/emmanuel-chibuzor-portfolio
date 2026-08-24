@@ -21,8 +21,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
- metadataBase: new URL('https://emmanuel-chibuzor.vercel.app'),
-
+metadataBase: new URL(
+  'https://cemmanzy.vercel.app'
+),
   title: {
     default: 'Emmanuel Chibuzor — Full-Stack Developer',
     template: '%s | Emmanuel Chibuzor',
@@ -87,7 +88,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    url: 'https://emmanuel-chibuzor.vercel.app',
+    url: 'https://cemmanzy.vercel.app',
     siteName: 'Emmanuel Chibuzor Portfolio',
     title: 'Emmanuel Chibuzor — Full-Stack Developer',
     description:

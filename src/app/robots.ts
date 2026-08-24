@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
     },
     sitemap:
-      'https://emmanuel-chibuzor.vercel.app/sitemap.xml',
+      'https://cemmanzy.vercel.app/sitemap.xml',
   };
 }
